@@ -18,6 +18,16 @@
 //  Si una tecnología NO está en Devicons (ej: "Scrum"),
 //  usa el campo "iconText" con 1-3 letras en vez de "icon".
 // ============================================================
+// 1. Esto escanea la carpeta assets y sus subcarpetas buscando cualquier archivo .png, .jpg o .jpeg
+const imagenesContext = require.context('./assets', true, /\.(png|jpe?g|svg)$/);
+
+const images = {};
+imagenesContext.keys().forEach((item) => {
+  const claveLimpia = item.replace('./', '');
+  images[claveLimpia] = imagenesContext(item);
+});
+
+
 
 export const ME = {
   name:       "Joan Francisco Rojas Varela",
