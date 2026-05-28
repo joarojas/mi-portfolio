@@ -5,41 +5,31 @@
 // ============================================================
 
 // ============================================================
-//  DEVICONS — Cómo funciona:
-//  Usamos la librería "devicons" vía CDN de jsDelivr.
-//  Cada ícono es una etiqueta <i> con una clase especial.
-//  
-//  PARA AGREGAR UN ÍCONO NUEVO:
-//  1. Ve a https://devicon.dev
-//  2. Busca la tecnología (ej: "flutter")
-//  3. Haz clic → copia el nombre de clase (ej: "devicon-flutter-plain")
-//  4. Pégalo en el campo "icon" de tu skill o proyecto
-//
-//  Si una tecnología NO está en Devicons (ej: "Scrum"),
-//  usa el campo "iconText" con 1-3 letras en vez de "icon".
+//  SISTEMA DE IMÁGENES AUTOMÁTICO
+//  Escanea toda la carpeta src/assets automáticamente.
+//  Para agregar una imagen nueva:
+//    1. Ponla en src/assets/ o src/assets/projects/
+//    2. Úsala con: images['nombre-del-archivo.png']
+//  Sin imports manuales, sin límite de imágenes.
 // ============================================================
-// 1. Escaneamos la carpeta assets de forma masiva
-const imagenesContext = require.context('./assets', true, /\.(png|jpe?g|svg)$/);
+const imagenesContext = require.context('./assets', true, /\.(png|jpe?g|svg|webp)$/);
 
 const images = {};
 imagenesContext.keys().forEach((item) => {
-  // Ejemplos de lo que viene en 'item': './joan.png' o './projects/AutoGest_Pro.png'
-  
-  // Guardamos la ruta procesada por Webpack (la que entiende internet)
-  const rutaProcesada = imagenesContext(item); 
-  
-  // Creamos accesos directos para evitar fallos de rutas relativas:
-  // Guardamos usando la ruta completa sin el punto inicial (ej: 'joan.png' o 'projects/AutoGest_Pro.png')
-  const claveLimpia = item.replace('./', '');
-  images[claveLimpia] = rutaProcesada;
-  
-  // Guardamos TAMBIÉN usando solo el nombre final del archivo como comodín de respaldo (ej: 'joan.png' o 'AutoGest_Pro.png')
-  const nombreArchivo = item.split('/').pop();
+  const rutaProcesada = imagenesContext(item);
+  const claveLimpia   = item.replace('./', '');   // 'joan.png' o 'projects/AutoGest_Pro.png'
+  const nombreArchivo = item.split('/').pop();    // 'joan.png' o 'AutoGest_Pro.png'
+  images[claveLimpia]   = rutaProcesada;
   images[nombreArchivo] = rutaProcesada;
 });
 
-// Puedes verificar de forma local qué guardó escribiendo un console.log(images); si quieres.
-
+// ============================================================
+//  DEVICONS — Logos de tecnologías
+//  1. Ve a https://devicon.dev
+//  2. Busca la tecnología → copia la clase (ej: "devicon-flutter-plain colored")
+//  3. Pégala en el campo "icon"
+//  Si no existe en Devicons, usa "iconText" con 2-3 letras.
+// ============================================================
 
 export const ME = {
   name:       "Joan Francisco Rojas Varela",
@@ -47,11 +37,11 @@ export const ME = {
   initials:   "JOAN",
   role:       "Estudiante de Ingeniería en Computación",
   location:   "Costa Rica 🇨🇷",
-  email:      "joan@email.com",
-  linkedin:   "linkedin.com/in/joarojas",
+  email:      "joan@email.com",           // ← cambia esto
+  linkedin:   "linkedin.com/in/joarojas", // ← cambia esto
   github:     "joarojas",
-  cv:         "/cv.pdf",
-  photo:      images['joan.png'],
+  cv:         "/cv.pdf",                  // pon tu CV en public/
+  photo:      images['joan.png'],         // src/assets/joan.png
   openToWork: true,
 
   bio: [
@@ -76,23 +66,35 @@ export const ME = {
   ],
 };
 
+// ============================================================
+//  PROYECTOS
+//
+//  image: usa images['nombre.png'] si tienes imagen,
+//         o null para mostrar el icono de Devicon.
+//
+//  PARA AGREGAR UN PROYECTO NUEVO:
+//  1. Pon la imagen en src/assets/projects/
+//  2. Copia un bloque { } de abajo
+//  3. Rellena los campos
+//  4. En image: usa images['mi-imagen.png']
+// ============================================================
 export const PROJECTS = [
   {
     id:       1,
-    icon:     "devicon-react-original colored",  // ← logo de React
+    icon:     "devicon-react-original colored",
     iconText: null,
     title:    "AutoFix Pro",
-    desc:     "Programa de gestión para talleres mecánicos, con citas, clientes, facturación y gestión de reparaciones. ",
+    desc:     "Programa de gestión para talleres mecánicos, con citas, clientes, facturación y gestión de reparaciones.",
     tags: [
-      { name: "React",    icon: "devicon-react-original colored" },
-      { name: "Node.js",  icon: "devicon-nodejs-plain colored" },
-      { name: "MongoDB",  icon: "devicon-mongodb-plain colored" },
-      { name: "Stripe",   icon: null, iconText: "STR" },
+      { name: "React",   icon: "devicon-react-original colored",  iconText: null },
+      { name: "Node.js", icon: "devicon-nodejs-plain colored",    iconText: null },
+      { name: "MongoDB", icon: "devicon-mongodb-plain colored",   iconText: null },
+      { name: "Stripe",  icon: null,                              iconText: "STR" },
     ],
     accent: "#ff3cac",
     demo:   "#",
     repo:   "https://github.com/joarojas/ecommerce",
-    image:  images["/projects/AutoGest_Pro.png"],
+    image:  images['AutoGest_Pro.png'],  // ← src/assets/projects/AutoGest_Pro.png
   },
   {
     id:       2,
@@ -101,9 +103,9 @@ export const PROJECTS = [
     title:    "Weather Dashboard",
     desc:     "App del tiempo con geolocalización, pronóstico de 7 días y visualizaciones animadas según el clima en tiempo real.",
     tags: [
-      { name: "JavaScript", icon: "devicon-javascript-plain colored" },
-      { name: "D3.js",      icon: "devicon-d3js-plain colored" },
-      { name: "API REST",   icon: null, iconText: "API" },
+      { name: "JavaScript", icon: "devicon-javascript-plain colored", iconText: null },
+      { name: "D3.js",      icon: "devicon-d3js-plain colored",       iconText: null },
+      { name: "API REST",   icon: null,                                iconText: "API" },
     ],
     accent: "#2de2e6",
     demo:   "#",
@@ -117,9 +119,9 @@ export const PROJECTS = [
     title:    "Clasificador ML",
     desc:     "Modelo que predice deserción estudiantil con 87% de precisión, entrenado con scikit-learn y expuesto con Flask.",
     tags: [
-      { name: "Python",      icon: "devicon-python-plain colored" },
-      { name: "scikit-learn",icon: null, iconText: "SKL" },
-      { name: "Flask",       icon: "devicon-flask-original" },
+      { name: "Python",       icon: "devicon-python-plain colored", iconText: null },
+      { name: "scikit-learn", icon: null,                           iconText: "SKL" },
+      { name: "Flask",        icon: "devicon-flask-original",       iconText: null },
     ],
     accent: "#f6f740",
     demo:   "#",
@@ -130,55 +132,53 @@ export const PROJECTS = [
   // ─── AGREGA TU PRÓXIMO PROYECTO AQUÍ ───
   // {
   //   id:       4,
-  //   icon:     "devicon-flutter-plain colored",  // busca en devicon.dev
+  //   icon:     "devicon-flutter-plain colored",
   //   iconText: null,
   //   title:    "Mi App",
-  //   desc:     "Descripción.",
+  //   desc:     "Descripción del proyecto.",
   //   tags: [
-  //     { name: "Flutter", icon: "devicon-flutter-plain colored" },
-  //     { name: "Firebase",icon: "devicon-firebase-plain colored" },
+  //     { name: "Flutter",  icon: "devicon-flutter-plain colored",  iconText: null },
+  //     { name: "Firebase", icon: "devicon-firebase-plain colored", iconText: null },
   //   ],
   //   accent: "#a855f7",
   //   demo:   "https://mi-app.vercel.app",
   //   repo:   "https://github.com/joarojas/mi-app",
-  //   image:  "/projects/mi-app.png",
+  //   image:  images['mi-app.png'],  // ← pon la imagen en src/assets/projects/
   // },
 ];
 
 // ============================================================
 //  SKILLS — Stack tecnológico
 //
-//  Cada skill tiene:
-//  name:     nombre que se muestra
-//  icon:     clase de Devicon (busca en https://devicon.dev)
-//  iconText: texto corto si NO hay Devicon para esa tecnología
+//  PARA AGREGAR UNA SKILL:
+//  1. Ve a devicon.dev → busca la tecnología
+//  2. Copia la clase → pégala en "icon"
+//  3. Si no existe en Devicons → usa iconText con 2-3 letras
 //
-//  EJEMPLO para agregar "Flutter":
-//  1. Ve a devicon.dev → busca "flutter"
-//  2. Copia la clase: "devicon-flutter-plain colored"
-//  3. Agrégala: { name: "Flutter", icon: "devicon-flutter-plain colored", iconText: null }
+//  PARA AGREGAR UNA CATEGORÍA NUEVA:
+//  Copia un bloque { cat, color, items } completo
 // ============================================================
 export const SKILLS = [
   {
     cat:   "Frontend",
     color: "#ff3cac",
     items: [
-      { name: "React",      icon: "devicon-react-original colored",     iconText: null },
-      { name: "TypeScript", icon: "devicon-typescript-plain colored",   iconText: null },
-      { name: "CSS3",       icon: "devicon-css3-plain colored",         iconText: null },
-      { name: "HTML5",      icon: "devicon-html5-plain colored",        iconText: null },
-      { name: "Tailwind",   icon: "devicon-tailwindcss-plain colored",  iconText: null },
+      { name: "React",      icon: "devicon-react-original colored",    iconText: null },
+      { name: "TypeScript", icon: "devicon-typescript-plain colored",  iconText: null },
+      { name: "CSS3",       icon: "devicon-css3-plain colored",        iconText: null },
+      { name: "HTML5",      icon: "devicon-html5-plain colored",       iconText: null },
+      { name: "Tailwind",   icon: "devicon-tailwindcss-plain colored", iconText: null },
     ],
   },
   {
     cat:   "Backend",
     color: "#2de2e6",
     items: [
-      { name: "Node.js",  icon: "devicon-nodejs-plain colored",      iconText: null },
-      { name: "Python",   icon: "devicon-python-plain colored",      iconText: null },
-      { name: "Java",     icon: "devicon-java-plain colored",        iconText: null },
-      { name: "GraphQL",  icon: "devicon-graphql-plain colored",     iconText: null },
-      { name: "Express",  icon: "devicon-express-original",          iconText: null },
+      { name: "Node.js",  icon: "devicon-nodejs-plain colored",   iconText: null },
+      { name: "Python",   icon: "devicon-python-plain colored",   iconText: null },
+      { name: "Java",     icon: "devicon-java-plain colored",     iconText: null },
+      { name: "GraphQL",  icon: "devicon-graphql-plain colored",  iconText: null },
+      { name: "Express",  icon: "devicon-express-original",       iconText: null },
     ],
   },
   {
@@ -195,36 +195,40 @@ export const SKILLS = [
     cat:   "DevOps",
     color: "#a855f7",
     items: [
-      { name: "Git",     icon: "devicon-git-plain colored",    iconText: null },
-      { name: "Docker",  icon: "devicon-docker-plain colored", iconText: null },
-      { name: "Linux",   icon: "devicon-linux-plain",          iconText: null },
-      { name: "GitHub",  icon: "devicon-github-original",      iconText: null },
+      { name: "Git",    icon: "devicon-git-plain colored",    iconText: null },
+      { name: "Docker", icon: "devicon-docker-plain colored", iconText: null },
+      { name: "Linux",  icon: "devicon-linux-plain",          iconText: null },
+      { name: "GitHub", icon: "devicon-github-original",      iconText: null },
     ],
   },
   {
     cat:   "IA / ML",
     color: "#4ade80",
     items: [
-      { name: "Python",     icon: "devicon-python-plain colored",    iconText: null },
+      { name: "Python",     icon: "devicon-python-plain colored",        iconText: null },
       { name: "TensorFlow", icon: "devicon-tensorflow-original colored", iconText: null },
-      { name: "pandas",     icon: "devicon-pandas-original colored", iconText: null },
-      { name: "NumPy",      icon: "devicon-numpy-original colored",  iconText: null },
+      { name: "pandas",     icon: "devicon-pandas-original colored",     iconText: null },
+      { name: "NumPy",      icon: "devicon-numpy-original colored",      iconText: null },
     ],
   },
   {
     cat:   "Herramientas",
     color: "#ff6b35",
     items: [
-      { name: "VS Code",  icon: "devicon-vscode-plain colored",   iconText: null },
-      { name: "Figma",    icon: "devicon-figma-plain colored",    iconText: null },
-      { name: "Postman",  icon: "devicon-postman-plain colored",  iconText: null },
-      { name: "Scrum",    icon: null,                             iconText: "SCR" },
+      { name: "VS Code", icon: "devicon-vscode-plain colored",  iconText: null },
+      { name: "Figma",   icon: "devicon-figma-plain colored",   iconText: null },
+      { name: "Postman", icon: "devicon-postman-plain colored", iconText: null },
+      { name: "Scrum",   icon: null,                            iconText: "SCR" },
     ],
   },
 ];
 
 // ============================================================
 //  EXPERIENCIA Y EDUCACIÓN
+//  Orden: más reciente primero.
+//
+//  type: "education" | "work" | "certification"
+//  icon: clase de Devicon que representa el rol
 // ============================================================
 export const EXPERIENCE = [
   {
@@ -254,22 +258,34 @@ export const EXPERIENCE = [
     type:  "certification",
     icon:  "devicon-python-plain colored",
   },
+
+  // ─── AGREGA EXPERIENCIA AQUÍ ───
+  // {
+  //   date:  "Jun–Ago 2025",
+  //   role:  "Desarrollador Freelance",
+  //   place: "Cliente independiente",
+  //   desc:  "Desarrollé una app web para gestión de inventario.",
+  //   color: "#a855f7",
+  //   type:  "work",
+  //   icon:  "devicon-nodejs-plain colored",
+  // },
 ];
 
 // ============================================================
-//  COMANDOS DE LA TERMINAL
+//  TERMINAL INTERACTIVA
+//  Edita las respuestas de cada comando aquí.
 // ============================================================
 export const TERMINAL_COMMANDS = {
   help: () => [
     { t: "cmd",  v: "Comandos disponibles:" },
-    { t: "info", v: "  about       → Sobre Joan" },
-    { t: "info", v: "  skills      → Stack tecnológico" },
-    { t: "info", v: "  projects    → Proyectos" },
-    { t: "info", v: "  contact     → Información de contacto" },
-    { t: "info", v: "  github      → Abre perfil de GitHub" },
-    { t: "info", v: "  cv          → Descarga el CV" },
-    { t: "info", v: "  clear       → Limpia la terminal" },
-    { t: "info", v: "  secret      → ???" },
+    { t: "info", v: "  about    → Sobre Joan" },
+    { t: "info", v: "  skills   → Stack tecnológico" },
+    { t: "info", v: "  projects → Proyectos" },
+    { t: "info", v: "  contact  → Información de contacto" },
+    { t: "info", v: "  github   → Abre perfil de GitHub" },
+    { t: "info", v: "  cv       → Descarga el CV" },
+    { t: "info", v: "  clear    → Limpia la terminal" },
+    { t: "info", v: "  secret   → ???" },
   ],
   about: () => [
     { t: "accent", v: "Joan Francisco Rojas Varela" },
@@ -279,15 +295,15 @@ export const TERMINAL_COMMANDS = {
   ],
   skills: () => [
     { t: "cmd",  v: "Stack tecnológico:" },
-    { t: "info", v: "  Frontend  → React, TypeScript, CSS3, HTML5, Tailwind" },
-    { t: "info", v: "  Backend   → Node.js, Python, Java, GraphQL" },
-    { t: "info", v: "  Datos     → MySQL, PostgreSQL, MongoDB, Firebase" },
-    { t: "info", v: "  DevOps    → Git, Docker, Linux, GitHub" },
-    { t: "info", v: "  IA/ML     → TensorFlow, pandas, NumPy" },
+    { t: "info", v: "  Frontend → React, TypeScript, CSS3, HTML5, Tailwind" },
+    { t: "info", v: "  Backend  → Node.js, Python, Java, GraphQL" },
+    { t: "info", v: "  Datos    → MySQL, PostgreSQL, MongoDB, Firebase" },
+    { t: "info", v: "  DevOps   → Git, Docker, Linux, GitHub" },
+    { t: "info", v: "  IA/ML    → TensorFlow, pandas, NumPy" },
   ],
   projects: () => [
     { t: "cmd",    v: "Proyectos destacados:" },
-    { t: "accent", v: "  [01] E-Commerce Platform" },
+    { t: "accent", v: "  [01] AutoFix Pro" },
     { t: "muted",  v: "       React · Node.js · MongoDB · Stripe" },
     { t: "accent", v: "  [02] Weather Dashboard" },
     { t: "muted",  v: "       JavaScript · D3.js · OpenWeather API" },
