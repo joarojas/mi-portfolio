@@ -5,30 +5,42 @@
 // ============================================================
 
 // ============================================================
-//  SISTEMA DE IMÁGENES AUTOMÁTICO
-//  Escanea toda la carpeta src/assets automáticamente.
-//  Para agregar una imagen nueva:
-//    1. Ponla en src/assets/ o src/assets/projects/
-//    2. Úsala con: images['nombre-del-archivo.png']
-//  Sin imports manuales, sin límite de imágenes.
+//  SISTEMA DE IMÁGENES POR MÓDULO
+//
+//  Cada carpeta tiene su propio contexto.
+//  Estructura de carpetas en src/assets/:
+//
+//  src/assets/
+//  ├── hero/          → tu foto de perfil
+//  ├── projects/      → capturas de proyectos
+//  ├── experience/    → logos de empresas / universidades
+//  └── certificates/  → diplomas y certificaciones
+//
+//  ¿CÓMO AGREGAR UNA IMAGEN?
+//  1. Ponla en la carpeta correcta (ej: src/assets/projects/mi-app.png)
+//  2. Úsala con el contexto de esa carpeta (ej: projectImages('./mi-app.png'))
+//  ¡Sin imports manuales, sin límite de imágenes!
 // ============================================================
-const imagenesContext = require.context('./assets', true, /\.(png|jpe?g|svg|webp)$/);
 
-const images = {};
-imagenesContext.keys().forEach((item) => {
-  const rutaProcesada = imagenesContext(item);
-  const claveLimpia   = item.replace('./', '');   // 'joan.png' o 'projects/AutoGest_Pro.png'
-  const nombreArchivo = item.split('/').pop();    // 'joan.png' o 'AutoGest_Pro.png'
-  images[claveLimpia]   = rutaProcesada;
-  images[nombreArchivo] = rutaProcesada;
-});
+// — Contexto para cada módulo —
+const heroImages        = require.context('./assets/hero',         false, /\.(png|jpe?g|svg|webp)$/);
+const projectImages     = require.context('./assets/projects',     false, /\.(png|jpe?g|svg|webp)$/);
+const experienceImages  = require.context('./assets/experience',   false, /\.(png|jpe?g|svg|webp)$/);
+const certImages        = require.context('./assets/certificates', false, /\.(png|jpe?g|svg|webp)$/);
+
+// — Helper seguro: si la imagen no existe, no rompe la app —
+const safeImg = (context, path) => {
+  try { return context(path); }
+  catch { return null; }
+};
 
 // ============================================================
 //  DEVICONS — Logos de tecnologías
 //  1. Ve a https://devicon.dev
-//  2. Busca la tecnología → copia la clase (ej: "devicon-flutter-plain colored")
+//  2. Busca la tecnología → copia la clase
+//     (ej: "devicon-flutter-plain colored")
 //  3. Pégala en el campo "icon"
-//  Si no existe en Devicons, usa "iconText" con 2-3 letras.
+//  Si no existe en Devicons → usa "iconText" con 2-3 letras.
 // ============================================================
 
 export const ME = {
@@ -41,7 +53,7 @@ export const ME = {
   linkedin:   "linkedin.com/in/joarojas", // ← cambia esto
   github:     "joarojas",
   cv:         "/cv.pdf",                  // pon tu CV en public/
-  photo:      images['joan.png'],         // src/assets/joan.png
+  photo:      safeImg(heroImages, './joan.png'), // → src/assets/hero/joan.png
   openToWork: true,
 
   bio: [
@@ -69,14 +81,14 @@ export const ME = {
 // ============================================================
 //  PROYECTOS
 //
-//  image: usa images['nombre.png'] si tienes imagen,
-//         o null para mostrar el icono de Devicon.
+//  image: safeImg(projectImages, './mi-imagen.png')
+//         → src/assets/projects/mi-imagen.png
+//         Si no tienes imagen → pon null y se muestra el icono
 //
 //  PARA AGREGAR UN PROYECTO NUEVO:
 //  1. Pon la imagen en src/assets/projects/
-//  2. Copia un bloque { } de abajo
-//  3. Rellena los campos
-//  4. En image: usa images['mi-imagen.png']
+//  2. Copia un bloque { } de abajo y rellena los campos
+//  3. En image: safeImg(projectImages, './mi-imagen.png')
 // ============================================================
 export const PROJECTS = [
   {
@@ -86,15 +98,15 @@ export const PROJECTS = [
     title:    "AutoFix Pro",
     desc:     "Programa de gestión para talleres mecánicos, con citas, clientes, facturación y gestión de reparaciones.",
     tags: [
-      { name: "React",   icon: "devicon-react-original colored",  iconText: null },
-      { name: "Node.js", icon: "devicon-nodejs-plain colored",    iconText: null },
-      { name: "MongoDB", icon: "devicon-mongodb-plain colored",   iconText: null },
-      { name: "Stripe",  icon: null,                              iconText: "STR" },
+      { name: "React",   icon: "devicon-react-original colored", iconText: null },
+      { name: "Node.js", icon: "devicon-nodejs-plain colored",   iconText: null },
+      { name: "MongoDB", icon: "devicon-mongodb-plain colored",  iconText: null },
+      { name: "Stripe",  icon: null,                             iconText: "STR" },
     ],
     accent: "#ff3cac",
     demo:   "#",
     repo:   "https://github.com/joarojas/ecommerce",
-    image:  images['AutoGest_Pro.png'],  // ← src/assets/projects/AutoGest_Pro.png
+    image:  safeImg(projectImages, './AutoGest_Pro.png'), // → src/assets/projects/AutoGest_Pro.png
   },
   {
     id:       2,
@@ -110,7 +122,7 @@ export const PROJECTS = [
     accent: "#2de2e6",
     demo:   "#",
     repo:   "https://github.com/joarojas/weather-dashboard",
-    image:  null,
+    image:  null, // ← sin imagen aún, muestra el icono
   },
   {
     id:       3,
@@ -143,7 +155,7 @@ export const PROJECTS = [
   //   accent: "#a855f7",
   //   demo:   "https://mi-app.vercel.app",
   //   repo:   "https://github.com/joarojas/mi-app",
-  //   image:  images['mi-app.png'],  // ← pon la imagen en src/assets/projects/
+  //   image:  safeImg(projectImages, './mi-app.png'),
   // },
 ];
 
@@ -151,9 +163,9 @@ export const PROJECTS = [
 //  SKILLS — Stack tecnológico
 //
 //  PARA AGREGAR UNA SKILL:
-//  1. Ve a devicon.dev → busca la tecnología
-//  2. Copia la clase → pégala en "icon"
-//  3. Si no existe en Devicons → usa iconText con 2-3 letras
+//  1. Ve a devicon.dev → busca la tecnología → copia la clase
+//  2. Agrégala al array items de la categoría correcta
+//  Si no existe en Devicons → iconText con 2-3 letras
 //
 //  PARA AGREGAR UNA CATEGORÍA NUEVA:
 //  Copia un bloque { cat, color, items } completo
@@ -174,11 +186,11 @@ export const SKILLS = [
     cat:   "Backend",
     color: "#2de2e6",
     items: [
-      { name: "Node.js",  icon: "devicon-nodejs-plain colored",   iconText: null },
-      { name: "Python",   icon: "devicon-python-plain colored",   iconText: null },
-      { name: "Java",     icon: "devicon-java-plain colored",     iconText: null },
-      { name: "GraphQL",  icon: "devicon-graphql-plain colored",  iconText: null },
-      { name: "Express",  icon: "devicon-express-original",       iconText: null },
+      { name: "Node.js",  icon: "devicon-nodejs-plain colored",  iconText: null },
+      { name: "Python",   icon: "devicon-python-plain colored",  iconText: null },
+      { name: "Java",     icon: "devicon-java-plain colored",    iconText: null },
+      { name: "GraphQL",  icon: "devicon-graphql-plain colored", iconText: null },
+      { name: "Express",  icon: "devicon-express-original",      iconText: null },
     ],
   },
   {
@@ -225,10 +237,16 @@ export const SKILLS = [
 
 // ============================================================
 //  EXPERIENCIA Y EDUCACIÓN
-//  Orden: más reciente primero.
+//
+//  logo: safeImg(experienceImages, './empresa.png')
+//        → src/assets/experience/empresa.png
+//        Si no tienes logo → pon null y se muestra el icono
 //
 //  type: "education" | "work" | "certification"
-//  icon: clase de Devicon que representa el rol
+//
+//  PARA AGREGAR UNA ENTRADA NUEVA:
+//  1. (Opcional) Pon el logo en src/assets/experience/
+//  2. Copia un bloque { } y rellena los campos
 // ============================================================
 export const EXPERIENCE = [
   {
@@ -238,7 +256,8 @@ export const EXPERIENCE = [
     desc:  "Carrera centrada en algoritmos, estructuras de datos, sistemas operativos, redes y desarrollo de software.",
     color: "#f6f740",
     type:  "education",
-    icon:  "devicon-github-original",
+    icon:  "devicon-github-original",        // ícono por defecto
+    logo:  null,                             // safeImg(experienceImages, './mi-uni.png')
   },
   {
     date:  "Ene–May 2024",
@@ -248,6 +267,7 @@ export const EXPERIENCE = [
     color: "#2de2e6",
     type:  "work",
     icon:  "devicon-react-original colored",
+    logo:  null,                             // safeImg(experienceImages, './empresa.png')
   },
   {
     date:  "2023",
@@ -257,6 +277,7 @@ export const EXPERIENCE = [
     color: "#ff3cac",
     type:  "certification",
     icon:  "devicon-python-plain colored",
+    logo:  null,                             // safeImg(certImages, './mi-certificado.png')
   },
 
   // ─── AGREGA EXPERIENCIA AQUÍ ───
@@ -268,6 +289,25 @@ export const EXPERIENCE = [
   //   color: "#a855f7",
   //   type:  "work",
   //   icon:  "devicon-nodejs-plain colored",
+  //   logo:  safeImg(experienceImages, './cliente.png'),
+  // },
+];
+
+// ============================================================
+//  CERTIFICADOS (sección opcional)
+//
+//  Si quieres mostrar una sección de certificados,
+//  agrega tus certificados aquí. La imagen va en
+//  src/assets/certificates/
+// ============================================================
+export const CERTIFICATES = [
+  // {
+  //   title:    "React - The Complete Guide",
+  //   issuer:   "Udemy",
+  //   date:     "2023",
+  //   url:      "https://udemy.com/certificate/...",
+  //   image:    safeImg(certImages, './react-cert.png'),
+  //   color:    "#61dafb",
   // },
 ];
 
@@ -289,8 +329,8 @@ export const TERMINAL_COMMANDS = {
   ],
   about: () => [
     { t: "accent", v: "Joan Francisco Rojas Varela" },
-    { t: "info",   v: "Estudiante de Ingeniería en Computación 🎓" },
-    { t: "info",   v: "Costa Rica 🇨🇷  |  Open to work ✅" },
+    { t: "info",   v: "Estudiante de Ingeniería en Computación " },
+    { t: "info",   v: "Costa Rica 🇨🇷  |  Open to work " },
     { t: "muted",  v: "Apasionado por el código limpio, el espacio y los retos imposibles." },
   ],
   skills: () => [
@@ -318,14 +358,14 @@ export const TERMINAL_COMMANDS = {
   ],
   github: () => {
     window.open("https://github.com/joarojas", "_blank");
-    return [{ t: "accent", v: "Abriendo github.com/joarojas... 🚀" }];
+    return [{ t: "accent", v: "Abriendo github.com/joarojas... " }];
   },
   cv: () => {
     window.open("/cv.pdf", "_blank");
-    return [{ t: "accent", v: "Descargando CV... 📄" }];
+    return [{ t: "accent", v: "Descargando CV... " }];
   },
   secret: () => [
-    { t: "accent", v: "🛸  ACCESO CLASIFICADO CONCEDIDO" },
+    { t: "accent", v: " ACCESO CLASIFICADO CONCEDIDO" },
     { t: "info",   v: "Si llegaste hasta aquí, ya demostraste curiosidad." },
     { t: "info",   v: "Eso es exactamente lo que busco en un equipo." },
     { t: "accent", v: "→  Escríbeme: joan@email.com" },
