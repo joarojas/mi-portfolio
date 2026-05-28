@@ -49,7 +49,7 @@ export const ME = {
   initials:   "JOAN",
   role:       "Estudiante de Ingeniería en Computación",
   location:   "Costa Rica 🇨🇷",
-  email:      "joan@email.com",           // ← cambia esto
+  email:      "jofarova214@gmail.com",           // ← cambia esto
   linkedin:   "linkedin.com/in/joarojas", // ← cambia esto
   github:     "joarojas",
   cv:         "/cv.pdf",                  // pon tu CV en public/
@@ -99,9 +99,8 @@ export const PROJECTS = [
     desc:     "Programa de gestión para talleres mecánicos, con citas, clientes, facturación y gestión de reparaciones.",
     tags: [
       { name: "React",   icon: "devicon-react-original colored", iconText: null },
-      { name: "Node.js", icon: "devicon-nodejs-plain colored",   iconText: null },
-      { name: "MongoDB", icon: "devicon-mongodb-plain colored",  iconText: null },
-      { name: "Stripe",  icon: null,                             iconText: "STR" },
+      { name: "Bootstrap", icon: "devicon-bootstrap-plain colored",   iconText: null },
+      { name: "FireBase", icon: "devicon-firebase-plain colored",  iconText: null },
     ],
     accent: "#ff3cac",
     demo:   "#",

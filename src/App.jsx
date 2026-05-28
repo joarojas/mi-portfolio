@@ -1,5 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import './App.css';
+import { useState, useEffect, useRef, useCallback } from "react"; // Aquí ya tienes useState y useRef
+import emailjs from '@emailjs/browser'; // Añadimos esto
 import { ME, PROJECTS, SKILLS, EXPERIENCE, TERMINAL_COMMANDS } from "./data";
+
 
 const FontLoader = () => (
   <style>{`
@@ -13,9 +16,9 @@ const FontLoader = () => (
     ::-webkit-scrollbar-thumb { background: #ff3cac; border-radius: 2px; }
     @keyframes blink       { 50%{opacity:0} }
     @keyframes heroIn      { from{opacity:0;transform:translateY(50px)} to{opacity:1;transform:none} }
-    @keyframes orbit       { from{transform:rotate(0deg) translateX(130px) rotate(0deg)} to{transform:rotate(360deg) translateX(130px) rotate(-360deg)} }
-    @keyframes orbit2      { from{transform:rotate(120deg) translateX(162px) rotate(-120deg)} to{transform:rotate(480deg) translateX(162px) rotate(-480deg)} }
-    @keyframes orbit3      { from{transform:rotate(240deg) translateX(108px) rotate(-240deg)} to{transform:rotate(600deg) translateX(108px) rotate(-600deg)} }
+    @keyframes orbit       { from{transform:rotate(0deg) translateX(180px) rotate(0deg)} to{transform:rotate(360deg) translateX(180px) rotate(-360deg)} }
+    @keyframes orbit2      { from{transform:rotate(0deg) translateX(210px) rotate(0deg)} to{transform:rotate(360deg) translateX(210px) rotate(-360deg)} }
+    @keyframes orbit3      { from{transform:rotate(0deg) translateX(180px) rotate(0deg)} to{transform:rotate(360deg) translateX(180px) rotate(-360deg)} }
     @keyframes ringRotate  { from{transform:rotateX(70deg) rotateZ(0deg)} to{transform:rotateX(70deg) rotateZ(360deg)} }
     @keyframes ringRotate2 { from{transform:rotateX(70deg) rotateZ(45deg)} to{transform:rotateX(70deg) rotateZ(405deg)} }
     @keyframes floatY      { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
@@ -28,26 +31,20 @@ const FontLoader = () => (
     .nav-a { color:#444; text-decoration:none; font-size:.85rem; font-weight:700; letter-spacing:.05em; transition:color .2s; }
     .nav-a:hover { color:#f0f0f0; }
     .nav-a.active { color:#ff3cac; }
-    .skill-card:hover  { transform:translateY(-5px) !important; }
-    .proj-card:hover   { transform:translateY(-10px) !important; }
-    .contact-row:hover { transform:translateX(10px) !important; border-color:rgba(255,60,172,.25) !important; }
+    .skill-card:hover  { transform:translateY(-5px); }
+    .proj-card:hover   { transform:translateY(-10px); }
+    .contact-row:hover { transform:translateX(10px); border-color:rgba(255,60,172,.25) !important; }
     input:focus, textarea:focus { border-color:rgba(255,60,172,.5) !important; outline:none; }
     ::selection { background:rgba(255,60,172,.3); }
     .term-input { background:transparent; border:none; outline:none; color:#f0f0f0; font-family:'JetBrains Mono',monospace; font-size:.88rem; flex:1; caret-color:#ff3cac; }
     .term-line  { line-height:1.7; font-size:.85rem; }
-    .di { font-size:1.4rem; line-height:1; }
-    .di-sm { font-size:1.1rem; line-height:1; }
   `}</style>
 );
 
 /* ── Devicon helper ── */
 function DevIcon({ icon, iconText, size = "1.4rem", color }) {
   if (icon) return <i className={`${icon}`} style={{ fontSize: size, lineHeight: 1 }} />;
-  return (
-    <span style={{ fontSize: "0.65rem", fontFamily: "'JetBrains Mono',monospace", fontWeight: 700, color: color || "#888", letterSpacing: "0.05em" }}>
-      {iconText}
-    </span>
-  );
+  return <span style={{ fontSize: "0.65rem", fontFamily: "'JetBrains Mono',monospace", fontWeight: 700, color: color || "#888", letterSpacing: "0.05em" }}>{iconText}</span>;
 }
 
 /* ── CUSTOM CURSOR ── */
@@ -84,8 +81,7 @@ function Starfield() {
     const resize = () => { W = c.width = window.innerWidth; H = c.height = window.innerHeight; };
     window.addEventListener("resize", resize);
     const stars = Array.from({ length: 220 }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 1.2 + .2, t: Math.random() * Math.PI * 2, s: Math.random() * .012 + .004,
+      x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .2, t: Math.random() * Math.PI * 2, s: Math.random() * .012 + .004,
     }));
     let raf;
     const draw = () => {
@@ -118,7 +114,6 @@ function ParticleCanvas({ mousePos }) {
         p.vx *= .97; p.vy *= .97; p.x = (p.x + p.vx + W) % W; p.y = (p.y + p.vy + H) % H;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.globalAlpha = p.a; ctx.fill();
       });
-      pts.forEach((a, i) => pts.slice(i + 1).forEach(b => { const d = Math.hypot(a.x - b.x, a.y - b.y); if (d < 85) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.strokeStyle = a.color; ctx.globalAlpha = (1 - d / 85) * .07; ctx.lineWidth = .5; ctx.stroke(); } }));
       ctx.globalAlpha = 1; raf = requestAnimationFrame(draw);
     };
     draw();
@@ -127,17 +122,19 @@ function ParticleCanvas({ mousePos }) {
   return <canvas ref={ref} style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />;
 }
 
-/* ── ORBITAL PHOTO ── */
+/* ── ORBITAL PHOTO (USANDO CLASES CSS LIMPIAS) ── */
 function OrbitalPhoto() {
   const orbiters = [
     { anim: "orbit 6s linear infinite",  color: "#ff3cac", icon: "devicon-react-original colored",  sz: 30 },
     { anim: "orbit2 9s linear infinite", color: "#2de2e6", icon: "devicon-python-plain colored",     sz: 28 },
     { anim: "orbit3 7s linear infinite", color: "#f6f740", icon: "devicon-nodejs-plain colored",     sz: 28 },
   ];
+
   return (
-    <div style={{ position: "relative", width: 340, height: 340, display: "flex", alignItems: "center", justifyContent: "center", animation: "floatY 4s ease-in-out infinite" }}>
-      <div style={{ position: "absolute", width: 300, height: 300, borderRadius: "50%", border: "1px solid rgba(255,60,172,.2)", animation: "ringRotate 12s linear infinite", transformStyle: "preserve-3d" }} />
-      <div style={{ position: "absolute", width: 340, height: 340, borderRadius: "50%", border: "1px solid rgba(45,226,230,.15)", animation: "ringRotate2 18s linear infinite", transformStyle: "preserve-3d" }} />
+    <div className="hero-orbital-container">
+      <div style={{ position: "absolute", width: "88%", height: "88%", borderRadius: "50%", border: "1px solid rgba(255,60,172,.2)", animation: "ringRotate 12s linear infinite", transformStyle: "preserve-3d" }} />
+      <div style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", border: "1px solid rgba(45,226,230,.15)", animation: "ringRotate2 18s linear infinite", transformStyle: "preserve-3d" }} />
+      
       {orbiters.map((o, i) => (
         <div key={i} style={{ position: "absolute", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ animation: o.anim, width: o.sz + 12, height: o.sz + 12, borderRadius: "50%", background: o.color + "22", border: `1px solid ${o.color}66`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -145,14 +142,17 @@ function OrbitalPhoto() {
           </div>
         </div>
       ))}
-      <div style={{ position: "absolute", width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle,rgba(255,60,172,.15),transparent 70%)", filter: "blur(20px)" }} />
-      <div style={{ width: 200, height: 200, borderRadius: "50%", overflow: "hidden", border: "2px solid rgba(255,60,172,.4)", boxShadow: "0 0 40px rgba(255,60,172,.25),0 0 80px rgba(45,226,230,.1)", animation: "pulseGlow 3s ease-in-out infinite", position: "relative", zIndex: 2 }}>
+      
+      <div style={{ position: "absolute", width: "70%", height: "70%", background: "radial-gradient(circle,rgba(255,60,172,.15),transparent 70%)", filter: "blur(20px)" }} />
+      
+      <div className="hero-profile-circle">
         <div style={{ position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none", background: "repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.07) 3px,rgba(0,0,0,.07) 4px)" }} />
         <div style={{ position: "absolute", left: 0, right: 0, height: 2, background: "rgba(255,60,172,.3)", zIndex: 4, animation: "scanH 3s linear infinite" }} />
         <img src={ME.photo} alt={ME.name} style={{ width: "100%", height: "100%", objectFit: "cover", filter: "contrast(1.05) saturate(.9)" }} />
       </div>
+
       {[[-10, -10, "top", "left"], [-10, null, "top", "right"], [null, -10, "bottom", "left"], [null, null, "bottom", "right"]].map(([t, l, vt, hl], i) => (
-        <div key={i} style={{ position: "absolute", top: t !== null ? t : undefined, left: l !== null ? l : undefined, bottom: t === null ? -10 : undefined, right: l === null ? -10 : undefined, width: 18, height: 18, borderTop: vt === "top" ? "2px solid #2de2e6" : "none", borderBottom: vt === "bottom" ? "2px solid #2de2e6" : "none", borderLeft: hl === "left" ? "2px solid #2de2e6" : "none", borderRight: hl === "right" ? "2px solid #2de2e6" : "none", zIndex: 5 }} />
+        <div key={i} className="aesthetic-corner" style={{ position: "absolute", top: t !== null ? t : undefined, left: l !== null ? l : undefined, bottom: t === null ? -10 : undefined, right: l === null ? -10 : undefined, width: 18, height: 18, borderTop: vt === "top" ? "2px solid #2de2e6" : "none", borderBottom: vt === "bottom" ? "2px solid #2de2e6" : "none", borderLeft: hl === "left" ? "2px solid #2de2e6" : "none", borderRight: hl === "right" ? "2px solid #2de2e6" : "none", zIndex: 5 }} />
       ))}
     </div>
   );
@@ -182,7 +182,7 @@ function Typewriter() {
 function GlitchName({ name }) {
   const [g, setG] = useState(false);
   useEffect(() => { const iv = setInterval(() => { setG(true); setTimeout(() => setG(false), 150); }, 3500); return () => clearInterval(iv); }, []);
-  const s = { fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(4rem,11vw,10rem)", lineHeight: .9, letterSpacing: "-.01em", color: "#f0f0f0", display: "block" };
+  const s = { fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(4.5rem,11vw,10rem)", lineHeight: .9, letterSpacing: "-.01em", color: "#f0f0f0", display: "block" };
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
       <span style={s}>{name}</span>
@@ -299,24 +299,16 @@ function ProjCard({ p, i }) {
     <Reveal delay={i * 100}>
       <div className="proj-card" onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
         style={{ background: h ? "#0e0e14" : "#09090e", border: `1px solid ${h ? p.accent : "rgba(255,255,255,.06)"}`, borderRadius: 24, overflow: "hidden", transition: "all .4s cubic-bezier(.23,1,.32,1)", boxShadow: h ? `0 30px 80px ${p.accent}1a` : "none", display: "flex", flexDirection: "column" }}>
-        {/* Banner con logo o imagen */}
         <div style={{ height: 180, display: "flex", alignItems: "center", justifyContent: "center", background: `radial-gradient(ellipse at 60% 40%,${p.accent}14,transparent 65%),#08080d`, position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", inset: 0, opacity: h ? .05 : 0, transition: "opacity .4s", backgroundImage: `repeating-linear-gradient(0deg,${p.accent},${p.accent} 1px,transparent 1px,transparent 36px)` }} />
-          {p.image
-            ? <img src={p.image} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover", opacity: .8 }} />
-            : <i className={p.icon} style={{ fontSize: "4rem", filter: `drop-shadow(0 0 20px ${p.accent}66)` }} />
-          }
+          {p.image ? <img src={p.image} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover", opacity: .8 }} /> : <i className={p.icon} style={{ fontSize: "4rem", filter: `drop-shadow(0 0 20px ${p.accent}66)` }} />}
           <div style={{ position: "absolute", bottom: 10, right: 14, fontFamily: "'JetBrains Mono',monospace", fontSize: ".6rem", color: p.accent, opacity: .5 }}>0{i + 1}</div>
         </div>
         <div style={{ padding: "1.5rem", flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
-          {/* Tags con Devicons */}
           <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
             {p.tags.map(tag => (
               <span key={tag.name} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: ".72rem", fontWeight: 600, padding: "3px 10px", borderRadius: 999, background: `${p.accent}14`, color: p.accent, border: `1px solid ${p.accent}28` }}>
-                {tag.icon
-                  ? <i className={tag.icon} style={{ fontSize: ".9rem" }} />
-                  : <span style={{ fontSize: ".6rem", fontFamily: "'JetBrains Mono',monospace" }}>{tag.iconText}</span>
-                }
+                {tag.icon ? <i className={tag.icon} style={{ fontSize: ".9rem" }} /> : <span style={{ fontSize: ".6rem", fontFamily: "'JetBrains Mono',monospace" }}>{tag.iconText}</span>}
                 {tag.name}
               </span>
             ))}
@@ -340,22 +332,17 @@ function SkillCard({ sk, i }) {
   return (
     <Reveal delay={i * 70}>
       <div className="skill-card" style={{ background: "#0b0b11", border: "1px solid rgba(255,255,255,.05)", borderRadius: 20, padding: "1.5rem", transition: "border-color .3s,transform .3s" }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = sk.color + "33"; e.currentTarget.style.transform = "translateY(-5px)"; }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,.05)"; e.currentTarget.style.transform = "none"; }}>
+        onMouseEnter={e => { e.currentTarget.style.borderColor = sk.color + "33"; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,.05)"; }}>
         <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "1rem", color: sk.color, letterSpacing: ".1em", marginBottom: "1.1rem" }}>{sk.cat}</div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
           {sk.items.map(item => (
             <div key={item.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, padding: "8px 12px", borderRadius: 12, background: sk.color + "0c", border: `1px solid ${sk.color}18`, transition: "all .2s", cursor: "default" }}
               onMouseEnter={e => { e.currentTarget.style.background = sk.color + "1a"; e.currentTarget.style.transform = "translateY(-3px)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = sk.color + "0c"; e.currentTarget.style.transform = "none"; }}>
-              {/* Ícono */}
               <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                {item.icon
-                  ? <i className={item.icon} style={{ fontSize: "1.6rem" }} />
-                  : <span style={{ fontSize: ".65rem", fontFamily: "'JetBrains Mono',monospace", fontWeight: 700, color: sk.color, letterSpacing: ".04em" }}>{item.iconText}</span>
-                }
+                {item.icon ? <i className={item.icon} style={{ fontSize: "1.6rem" }} /> : <span style={{ fontSize: ".65rem", fontFamily: "'JetBrains Mono',monospace", fontWeight: 700, color: sk.color, letterSpacing: ".04em" }}>{item.iconText}</span>}
               </div>
-              {/* Nombre */}
               <span style={{ fontSize: ".65rem", color: "#777", fontFamily: "'JetBrains Mono',monospace", letterSpacing: ".04em", whiteSpace: "nowrap" }}>{item.name}</span>
             </div>
           ))}
@@ -368,20 +355,47 @@ function SkillCard({ sk, i }) {
 /* ══ MAIN APP ══ */
 const NAV_ITEMS = [["Inicio","#hero"],["Sobre mí","#about"],["Skills","#skills"],["Proyectos","#projects"],["Experiencia","#experience"],["Contacto","#contact"]];
 
+// ─── EMAILJS CONFIG ───────────────────────────────────────
+const EMAILJS_SERVICE  = "service_9ey91y5";
+const EMAILJS_TEMPLATE = "template_ur03x43";
+const EMAILJS_KEY      = "gRUmRdGYqjyy6eNCJ";
+
 export default function Portfolio() {
   const mousePos = useRef({ x: -999, y: -999 });
   const [activeNav, setActiveNav] = useState(0);
   const [showTerm,  setShowTerm]  = useState(false);
-  const [sent,      setSent]      = useState(false);
+
+  // Estados del formulario
+  const [formData,   setFormData]   = useState({ name: "", email: "", message: "" });
+  const [formStatus, setFormStatus] = useState("idle"); // idle | sending | sent | error
+
   const handleMouse = useCallback(e => { mousePos.current = { x: e.clientX, y: e.clientY }; }, []);
 
-  useEffect(() => { window.addEventListener("mousemove", handleMouse); return () => window.removeEventListener("mousemove", handleMouse); }, []);
-  useEffect(() => {
-    const ids = ["hero","about","skills","projects","experience","contact"];
-    const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) setActiveNav(ids.indexOf(e.target.id)); }), { threshold: .35 });
-    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
-    return () => obs.disconnect();
-  }, []);
+  // Inicializar EmailJS una sola vez
+  useEffect(() => { emailjs.init(EMAILJS_KEY); }, []);
+
+  const handleChange = e => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setFormStatus("sending");
+    try {
+      await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+        from_name:  formData.name,
+        from_email: formData.email,
+        message:    formData.message,
+      });
+      setFormStatus("sent");
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => setFormStatus("idle"), 4000);
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setFormStatus("error");
+      setTimeout(() => setFormStatus("idle"), 4000);
+    }
+  };
   useEffect(() => {
     const seq = [38,38,40,40,37,39,37,39,66,65]; let pos = 0;
     const kd = e => { pos = e.keyCode === seq[pos] ? pos + 1 : 0; if (pos === seq.length) { setShowTerm(true); pos = 0; } };
@@ -406,64 +420,62 @@ export default function Portfolio() {
       <Starfield />
       {showTerm && <Terminal onClose={() => setShowTerm(false)} />}
 
-      {/* NAV */}
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 3rem", background: "rgba(5,5,8,.88)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,.04)" }}>
-        <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "1.5rem", letterSpacing: ".08em", background: "linear-gradient(90deg,#ff3cac,#2de2e6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>JOAROJAS.DEV</div>
-        <ul style={{ display: "flex", gap: "1.75rem", listStyle: "none", alignItems: "center" }}>
+      <nav className="main-nav">
+        <div className="nav-logo">JOAROJAS.DEV</div>
+        <ul className="nav-links">
           {NAV_ITEMS.map(([lbl, href], i) => <li key={lbl}><a href={href} className={`nav-a${activeNav === i ? " active" : ""}`}>{lbl}</a></li>)}
           <li>
-            <button onClick={() => setShowTerm(true)} style={{ padding: ".4rem 1rem", borderRadius: 999, background: "rgba(255,60,172,.1)", border: "1px solid rgba(255,60,172,.3)", color: "#ff3cac", fontFamily: "'JetBrains Mono',monospace", fontSize: ".72rem", cursor: "none", letterSpacing: ".06em", transition: "all .2s" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,60,172,.2)"; }} onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,60,172,.1)"; }}>
+            <button onClick={() => setShowTerm(true)} className="nav-term-btn">
               &gt;_ terminal
             </button>
           </li>
-          <li><a href={ME.cv} download style={{ padding: ".4rem 1.1rem", borderRadius: 999, background: "#ff3cac", color: "#000", fontWeight: 800, fontSize: ".78rem", textDecoration: "none", fontFamily: "'Cabinet Grotesk',sans-serif" }}>↓ CV</a></li>
+          <li><a href={ME.cv} download className="nav-cv-btn">↓ CV</a></li>
         </ul>
       </nav>
 
-      {/* ═══ HERO ═══ */}
-      <section id="hero" style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", padding: "0 3rem" }}>
+      <section id="hero" className="hero-section">
         <ParticleCanvas mousePos={mousePos} />
-        <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px)", backgroundSize: "60px 60px", animation: "gridPulse 4s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", top: "10%", right: "5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(168,85,247,.08),rgba(255,60,172,.04) 40%,transparent 70%)", filter: "blur(40px)", pointerEvents: "none", zIndex: 0 }} />
-        <div style={{ position: "relative", zIndex: 2, maxWidth: 1150, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr auto", gap: "3rem", alignItems: "center" }}>
-          <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: "2rem", background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 999, padding: "7px 16px", animation: "heroIn .6s ease both" }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 8px #4ade80", animation: "blink 2s infinite" }} />
-              <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: ".68rem", color: "#666", letterSpacing: ".12em" }}>OPEN TO WORK · {ME.location}</span>
+        <div className="hero-bg-grid" />
+        <div className="hero-bg-glow" />
+        
+        <div className="hero-grid">
+          <div className="hero-text-col">
+            <div className="hero-badge">
+              <span className="hero-badge-dot" />
+              <span className="hero-badge-text">OPEN TO WORK · {ME.location}</span>
             </div>
-            <div style={{ animation: "heroIn .8s .1s ease both", animationFillMode: "both", opacity: 0 }}>
+            <div className="hero-glitch">
               <GlitchName name="JOAN" />
               <GlitchName name="ROJAS" />
             </div>
-            <div style={{ marginTop: "1.2rem", marginBottom: "2rem", animation: "heroIn .8s .25s ease both", animationFillMode: "both", opacity: 0 }}><Typewriter /></div>
-            <p style={{ maxWidth: 480, color: "#555", fontSize: "1rem", lineHeight: 1.8, marginBottom: "2.5rem", fontWeight: 300, animation: "heroIn .8s .4s ease both", animationFillMode: "both", opacity: 0 }}>
+            <div className="hero-typewriter"><Typewriter /></div>
+            <p className="hero-desc">
               Construyo software que importa. Estudiante de Ingeniería en Computación apasionado por el código limpio, los retos imposibles y el espacio exterior.
             </p>
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", animation: "heroIn .8s .55s ease both", animationFillMode: "both", opacity: 0 }}>
+            <div className="hero-btns">
               <MagBtn href="#projects" bg="#ff3cac" color="#000" glow="0 0 40px rgba(255,60,172,.4)">Ver proyectos →</MagBtn>
               <MagBtn href="#contact"  bg="transparent" color="#f0f0f0">Hablemos</MagBtn>
               <MagBtn href={ME.cv}     bg="rgba(45,226,230,.08)" color="#2de2e6" download>↓ CV</MagBtn>
             </div>
-            <div style={{ marginTop: "2rem", animation: "heroIn .8s .7s ease both", animationFillMode: "both", opacity: 0 }}>
-              <button onClick={() => setShowTerm(true)} style={{ background: "transparent", border: "none", cursor: "none", padding: 0 }}>
-                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: ".7rem", color: "#333", letterSpacing: ".1em" }}>&gt;_ prueba la <span style={{ color: "#ff3cac" }}>terminal interactiva</span></span>
+            <div className="hero-term-wrapper">
+              <button onClick={() => setShowTerm(true)} className="hero-term-link">
+                &gt;_ prueba la <span>terminal interactiva</span>
               </button>
             </div>
           </div>
-          <div style={{ animation: "heroIn .9s .3s ease both", animationFillMode: "both", opacity: 0 }}><OrbitalPhoto /></div>
+          <div className="hero-photo-col">
+            <OrbitalPhoto />
+          </div>
         </div>
-        <div style={{ position: "absolute", bottom: "2rem", left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, color: "#333", fontSize: ".6rem", letterSpacing: ".18em", zIndex: 2 }}>
-          <span>SCROLL</span>
-          <div style={{ width: 1, height: 50, background: "linear-gradient(to bottom,#ff3cac,transparent)" }} />
+        <div className="hero-scroll">
+          <span>SCROLL</span><div />
         </div>
       </section>
 
-      {/* ═══ ABOUT ═══ */}
       <section id="about" style={{ background: "#07070c", borderTop: "1px solid rgba(255,255,255,.03)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "7rem 2rem" }}>
+        <div className="section-container">
           <Reveal>{sLabel(1, "Sobre mí")}</Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "start" }}>
+          <div className="about-grid">
             <div>
               <Reveal>{sH2("Código, café", ["y estrellas.", "#2de2e6"])}</Reveal>
               {ME.bio.map((p, i) => <Reveal key={i} delay={i * 70}><p style={{ color: "#555", lineHeight: 1.85, marginBottom: "1.2rem", fontWeight: 300, fontSize: "1rem" }} dangerouslySetInnerHTML={{ __html: p.replace("Joan Francisco Rojas Varela", "<span style='color:#f0f0f0;font-weight:500'>Joan Francisco Rojas Varela</span>").replace("ingeniería y diseño", "<span style='color:#f0f0f0;font-weight:500'>ingeniería y diseño</span>") }} /></Reveal>)}
@@ -485,28 +497,24 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* ═══ SKILLS ═══ */}
       <section id="skills" style={{ background: "#050508" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "7rem 2rem" }}>
+        <div className="section-container">
           <Reveal>{sLabel(2, "Stack tecnológico")}</Reveal>
           <Reveal>{sH2("Herramientas", ["de mi arsenal.", "#a855f7"])}</Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(270px,1fr))", gap: "1rem" }}>
+          <div className="skills-grid">
             {SKILLS.map((sk, i) => <SkillCard key={sk.cat} sk={sk} i={i} />)}
           </div>
         </div>
       </section>
 
-      {/* ═══ PROJECTS ═══ */}
       <section id="projects" style={{ background: "#07070c", borderTop: "1px solid rgba(255,255,255,.03)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "7rem 2rem" }}>
+        <div className="section-container">
           <Reveal>{sLabel(3, "Proyectos")}</Reveal>
           <Reveal>{sH2("Lo que he", ["construido.", "#ff3cac"])}</Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(310px,1fr))", gap: "1.5rem" }}>
+          <div className="projects-grid">
             {PROJECTS.map((p, i) => <ProjCard key={p.id} p={p} i={i} />)}
             <Reveal delay={320}>
-              <div style={{ border: "2px dashed rgba(255,255,255,.07)", borderRadius: 24, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", padding: "3rem", minHeight: 280, cursor: "none", transition: "all .3s" }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,60,172,.3)"; e.currentTarget.style.background = "rgba(255,60,172,.02)"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,.07)"; e.currentTarget.style.background = "transparent"; }}>
+              <div className="next-project-card" style={{ border: "2px dashed rgba(255,255,255,.07)", borderRadius: 24, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", padding: "3rem", minHeight: 280, cursor: "none", transition: "all .3s" }}>
                 <div style={{ width: 52, height: 52, borderRadius: "50%", border: "2px dashed rgba(255,255,255,.12)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", color: "#444" }}>+</div>
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "1.3rem", color: "#333", letterSpacing: ".05em" }}>PRÓXIMO PROYECTO</div>
@@ -518,9 +526,8 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* ═══ EXPERIENCE ═══ */}
       <section id="experience" style={{ background: "#050508" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "7rem 2rem" }}>
+        <div className="section-container">
           <Reveal>{sLabel(4, "Experiencia & Educación")}</Reveal>
           <Reveal>{sH2("Mi camino", ["hasta aquí.", "#2de2e6"])}</Reveal>
           <div style={{ position: "relative", paddingLeft: "3rem" }}>
@@ -542,14 +549,13 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* ═══ CONTACT ═══ */}
       <section id="contact" style={{ background: "#07070c", borderTop: "1px solid rgba(255,255,255,.03)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "7rem 2rem" }}>
+        <div className="section-container">
           <Reveal>{sLabel(5, "Contacto")}</Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "start" }}>
+          <div className="contact-grid">
             <div>
-              <Reveal>{sH2("¿Hablamos?", ["🚀", "#ff3cac"])}</Reveal>
-              <Reveal delay={80}><p style={{ color: "#555", lineHeight: 1.85, fontWeight: 300, marginBottom: "2.5rem" }}>Abierto a prácticas, proyectos freelance o simplemente intercambiar ideas. Respondo en menos de 24h.</p></Reveal>
+              <Reveal>{sH2("¿Hablamos?")}</Reveal>
+              <Reveal delay={80}><p style={{ color: "#555", lineHeight: 1.85, fontWeight: 300, marginBottom: "2.5rem" }}>Abierto a proyectos o simplemente intercambiar ideas. Respondo rápido.</p></Reveal>
               <div style={{ display: "flex", flexDirection: "column", gap: ".85rem" }}>
                 {[
                   { icon: "devicon-google-plain colored", label: "Email",    val: ME.email,    href: `mailto:${ME.email}`,                     color: "#ff3cac" },
@@ -557,11 +563,8 @@ export default function Portfolio() {
                   { icon: "devicon-github-original",        label: "GitHub",   val: `github.com/${ME.github}`, href: `https://github.com/${ME.github}`, color: "#a855f7" },
                 ].map((c, i) => (
                   <Reveal key={c.label} delay={i * 70}>
-                    <a href={c.href} target="_blank" rel="noreferrer" className="contact-row"
-                      style={{ display: "flex", alignItems: "center", gap: "1rem", padding: ".9rem 1.2rem", borderRadius: 14, background: "#0b0b11", border: "1px solid rgba(255,255,255,.05)", textDecoration: "none", color: "#f0f0f0", transition: "all .25s" }}>
-                      <div style={{ width: 38, height: 38, borderRadius: 10, background: c.color + "14", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <i className={c.icon} style={{ fontSize: "1.2rem" }} />
-                      </div>
+                    <a href={c.href} target="_blank" rel="noreferrer" className="contact-row" style={{ display: "flex", alignItems: "center", gap: "1rem", padding: ".9rem 1.2rem", borderRadius: 14, background: "#0b0b11", border: "1px solid rgba(255,255,255,.05)", textDecoration: "none", color: "#f0f0f0", transition: "all .25s" }}>
+                      <div style={{ width: 38, height: 38, borderRadius: 10, background: c.color + "14", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><i className={c.icon} style={{ fontSize: "1.2rem" }} /></div>
                       <div>
                         <div style={{ fontSize: ".65rem", color: "#444", letterSpacing: ".08em", fontFamily: "'JetBrains Mono',monospace" }}>{c.label.toUpperCase()}</div>
                         <div style={{ fontSize: ".88rem", color: c.color, fontWeight: 500, marginTop: 2 }}>{c.val}</div>
@@ -569,34 +572,74 @@ export default function Portfolio() {
                     </a>
                   </Reveal>
                 ))}
-                <Reveal delay={280}>
-                  <a href={ME.cv} download className="contact-row"
-                    style={{ display: "flex", alignItems: "center", gap: "1rem", padding: ".9rem 1.2rem", borderRadius: 14, background: "#0b0b11", border: "1px solid rgba(255,255,255,.05)", textDecoration: "none", color: "#f0f0f0", transition: "all .25s" }}>
-                    <div style={{ width: 38, height: 38, borderRadius: 10, background: "#f6f74014", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "1.1rem" }}>📄</div>
-                    <div>
-                      <div style={{ fontSize: ".65rem", color: "#444", letterSpacing: ".08em", fontFamily: "'JetBrains Mono',monospace" }}>CV</div>
-                      <div style={{ fontSize: ".88rem", color: "#f6f740", fontWeight: 500, marginTop: 2 }}>Descargar PDF</div>
-                    </div>
-                  </a>
-                </Reveal>
               </div>
             </div>
             <Reveal delay={150}>
-              <form onSubmit={e => { e.preventDefault(); setSent(true); setTimeout(() => setSent(false), 3000); }} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                  {[["Nombre","text","Tu nombre"],["Email","email",ME.email]].map(([lbl, type, ph]) => (
-                    <div key={lbl} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                      <label style={{ fontSize: ".65rem", color: "#444", letterSpacing: ".12em", fontFamily: "'JetBrains Mono',monospace" }}>{lbl.toUpperCase()}</label>
-                      <input type={type} required placeholder={ph} style={{ background: "#0b0b11", border: "1px solid rgba(255,255,255,.07)", borderRadius: 10, padding: ".7rem .9rem", color: "#f0f0f0", fontFamily: "'Cabinet Grotesk',sans-serif", fontSize: ".9rem", transition: "border-color .2s" }} />
-                    </div>
-                  ))}
+                  {/* Nombre */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <label style={{ fontSize: ".65rem", color: "#444", letterSpacing: ".12em", fontFamily: "'JetBrains Mono',monospace" }}>NOMBRE</label>
+                    <input
+                      type="text" name="name" required
+                      placeholder="Tu nombre"
+                      value={formData.name}
+                      onChange={handleChange}
+                      style={{ background: "#0b0b11", border: "1px solid rgba(255,255,255,.07)", borderRadius: 10, padding: ".7rem .9rem", color: "#f0f0f0", fontFamily: "'Cabinet Grotesk',sans-serif", fontSize: ".9rem", transition: "border-color .2s" }}
+                    />
+                  </div>
+                  {/* Email */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <label style={{ fontSize: ".65rem", color: "#444", letterSpacing: ".12em", fontFamily: "'JetBrains Mono',monospace" }}>EMAIL</label>
+                    <input
+                      type="email" name="email" required
+                      placeholder="tu@email.com"
+                      value={formData.email}
+                      onChange={handleChange}
+                      style={{ background: "#0b0b11", border: "1px solid rgba(255,255,255,.07)", borderRadius: 10, padding: ".7rem .9rem", color: "#f0f0f0", fontFamily: "'Cabinet Grotesk',sans-serif", fontSize: ".9rem", transition: "border-color .2s" }}
+                    />
+                  </div>
                 </div>
+
+                {/* Mensaje */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   <label style={{ fontSize: ".65rem", color: "#444", letterSpacing: ".12em", fontFamily: "'JetBrains Mono',monospace" }}>MENSAJE</label>
-                  <textarea required rows={5} placeholder="Cuéntame sobre tu idea o proyecto..." style={{ background: "#0b0b11", border: "1px solid rgba(255,255,255,.07)", borderRadius: 10, padding: ".7rem .9rem", color: "#f0f0f0", fontFamily: "'Cabinet Grotesk',sans-serif", fontSize: ".9rem", resize: "vertical", transition: "border-color .2s" }} />
+                  <textarea
+                    name="message" required rows={5}
+                    placeholder="Cuéntame sobre tu idea o proyecto..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    style={{ background: "#0b0b11", border: "1px solid rgba(255,255,255,.07)", borderRadius: 10, padding: ".7rem .9rem", color: "#f0f0f0", fontFamily: "'Cabinet Grotesk',sans-serif", fontSize: ".9rem", resize: "vertical", transition: "border-color .2s" }}
+                  />
                 </div>
-                <button type="submit" style={{ alignSelf: "flex-end", padding: ".8rem 2rem", borderRadius: 999, background: sent ? "#4ade80" : "linear-gradient(135deg,#ff3cac,#a855f7)", color: sent ? "#000" : "#fff", fontFamily: "'Cabinet Grotesk',sans-serif", fontWeight: 800, fontSize: ".9rem", border: "none", cursor: "none", transition: "all .4s", boxShadow: sent ? "0 0 30px rgba(74,222,128,.4)" : "0 0 30px rgba(255,60,172,.3)" }}>
-                  {sent ? "✓ ¡Enviado!" : "Enviar mensaje →"}
+
+                {/* Mensaje de error */}
+                {formStatus === "error" && (
+                  <div style={{ fontSize: ".8rem", color: "#ff6b6b", fontFamily: "'JetBrains Mono',monospace", textAlign: "center", padding: ".5rem", borderRadius: 8, background: "rgba(255,107,107,.08)", border: "1px solid rgba(255,107,107,.2)" }}>
+                    ✕ Error al enviar. Intenta de nuevo o escríbeme directo.
+                  </div>
+                )}
+
+                {/* Botón con estados */}
+                <button
+                  type="submit"
+                  disabled={formStatus === "sending"}
+                  style={{
+                    alignSelf: "center", padding: ".8rem 2rem", borderRadius: 999,
+                    background: formStatus === "sent"    ? "#4ade80"
+                              : formStatus === "error"   ? "#ff6b6b"
+                              : formStatus === "sending" ? "rgba(255,60,172,.4)"
+                              : "linear-gradient(135deg,#ff3cac,#a855f7)",
+                    color: (formStatus === "sent" || formStatus === "error") ? "#000" : "#fff",
+                    fontFamily: "'Cabinet Grotesk',sans-serif", fontWeight: 800, fontSize: ".9rem",
+                    border: "none", cursor: formStatus === "sending" ? "wait" : "none",
+                    transition: "all .4s", opacity: formStatus === "sending" ? .7 : 1,
+                    boxShadow: formStatus === "sent" ? "0 0 30px rgba(74,222,128,.4)" : "0 0 30px rgba(255,60,172,.3)",
+                  }}>
+                  {formStatus === "sending" ? "Enviando..." :
+                   formStatus === "sent"    ? "✓ ¡Mensaje enviado!" :
+                   formStatus === "error"   ? "✕ Error, intenta de nuevo" :
+                   "Enviar mensaje →"}
                 </button>
               </form>
             </Reveal>
@@ -604,11 +647,10 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer style={{ borderTop: "1px solid rgba(255,255,255,.04)", padding: "1.75rem 3rem", display: "flex", alignItems: "center", justifyContent: "space-between", color: "#333", fontSize: ".78rem" }}>
-        <span style={{ fontFamily: "'JetBrains Mono',monospace", letterSpacing: ".06em" }}>© 2025 {ME.name}</span>
-        <span>Hecho con <span style={{ color: "#ff3cac" }}>♥</span> desde {ME.location}</span>
-        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: ".68rem" }}>v1.0.0</span>
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", letterSpacing: ".06em" }}>© 2026 {ME.name}</span>
+        <span>Hecho con corazón desde {ME.location}</span>
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: ".68rem" }}>v1.0.14</span>
       </footer>
     </div>
   );

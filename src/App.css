@@ -1,38 +1,198 @@
-.App {
-  text-align: center;
+/* ==========================================================================
+   ESTILOS BASE Y GLOBALES
+   ========================================================================== */
+.App { text-align: center; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+img, video, canvas { max-width: 100%; height: auto; }
+
+html, body, #root, main, .App {
+  width: 100%; max-width: 100vw; overflow-x: hidden; position: relative;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+canvas { left: 0; top: 0; width: 100vw; height: 100vh; position: fixed; z-index: -1; }
+
+.section-container { max-width: 1100px; margin: 0 auto; padding: 7rem 2rem; }
+
+/* ==========================================================================
+   NAVEGACIÓN
+   ========================================================================== */
+.main-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 3rem; background: rgba(5,5,8,.88); 
+  -webkit-backdrop-filter: blur(20px); /* Safari 9+, iOS 9+ */
+  backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: .08em;
+  background: linear-gradient(90deg, #ff3cac, #2de2e6);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
+.nav-term-btn {
+  padding: .4rem 1rem; border-radius: 999px; background: rgba(255,60,172,.1);
+  border: 1px solid rgba(255,60,172,.3); color: #ff3cac;
+  font-family: 'JetBrains Mono', monospace; font-size: .72rem; cursor: none;
+}
+.nav-cv-btn {
+  padding: .4rem 1.1rem; border-radius: 999px; background: #ff3cac;
+  color: #000; font-weight: 800; font-size: .78rem; text-decoration: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* ==========================================================================
+   SECCIÓN HERO
+   ========================================================================== */
+.hero-section {
+  min-height: 100vh; display: flex; align-items: center; position: relative;
+  overflow: hidden; padding: 0 3rem;
+}
+.hero-grid {
+  position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center;
+}
+
+.hero-text-col { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px; margin-bottom: 2rem;
+  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07);
+  border-radius: 999px; padding: 7px 16px;
+}
+.hero-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+.hero-badge-text { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #666; letter-spacing: .12em; }
+.hero-desc { max-width: 480px; color: #555; font-size: 1rem; line-height: 1.8; margin-bottom: 2.5rem; }
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-scroll { 
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); 
+  display: flex; flex-direction: column; align-items: center; gap: 8px; 
+  color: #333; font-size: .6rem; letter-spacing: .18em; z-index: 2; 
+}
+.hero-scroll div { width: 1px; height: 50px; background: linear-gradient(to bottom, #ff3cac, transparent); }
+
+.hero-orbital-container {
+  width: 460px; height: 460px; position: relative; display: flex; align-items: center;
+  justify-content: center; animation: floatY 4s ease-in-out infinite;
+}
+.hero-profile-circle {
+  width: 260px; height: 260px; border-radius: 50%; overflow: hidden;
+  border: 2px solid rgba(255, 60, 172, 0.4); box-shadow: 0 0 40px rgba(255, 60, 172, 0.25);
+  animation: pulseGlow 3s ease-in-out infinite; z-index: 2;
+}
+
+/* ==========================================================================
+   GRIDS GENERALES
+   ========================================================================== */
+.about-grid, .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1rem; }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.5rem; }
+
+/* ==========================================================================
+   ANIMACIONES BASE
+   ========================================================================== */
+@keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 40px rgba(255, 60, 172, 0.25); } 50% { box-shadow: 0 0 60px rgba(255, 60, 172, 0.4); } }
+@keyframes orbit { from { transform: rotate(0deg) translateX(190px) rotate(0deg); } to { transform: rotate(360deg) translateX(190px) rotate(-360deg); } }
+@keyframes orbit2 { from { transform: rotate(0deg) translateX(215px) rotate(0deg); } to { transform: rotate(360deg) translateX(215px) rotate(-360deg); } }
+@keyframes orbit3 { from { transform: rotate(0deg) translateX(190px) rotate(0deg); } to { transform: rotate(360deg) translateX(190px) rotate(-360deg); } }
+
+/* ==========================================================================
+   MÓVIL (768px) - CORRECCIONES RESPONSIVAS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .main-nav { flex-direction: column; gap: 12px; padding: 1rem 1.5rem; }
+  .nav-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+
+  /* Ajuste de Hero para evitar solapamientos y cortes */
+  .hero-section { height: auto; padding: 150px 1.5rem 80px 1.5rem; display: flex; flex-direction: column; }
+  .hero-grid { display: flex; flex-direction: column-reverse; gap: 2rem; }
+  .hero-text-col { align-items: center; text-align: center; }
+  
+  /* Ajuste Orbital: El padding arriba permite ver los bordes */
+  .hero-orbital-container {
+    width: 260px !important; height: 260px !important; 
+    margin: 20px auto 40px auto !important; 
+    transform: scale(0.8) !important;
   }
-}
+  .hero-profile-circle { width: 140px; height: 140px; }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  /* FIX DEFINITIVO DEL SCROLL */
+  .hero-scroll {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin-top: 30px !important; 
+    display: flex;
   }
-  to {
-    transform: rotate(360deg);
+
+  /* Ajustes Formulario Contacto */
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .section-container { padding: 5rem 1.5rem; }
+  
+  #contact form, #contact > div { 
+    width: 90vw !important; 
+    margin: 0 auto !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+  }
+  
+  /* Centrado forzado del botón de envío */
+  #contact form button[type="submit"] { 
+    width: 100% !important; 
+    max-width: 300px !important; 
+    margin: 20px auto 0 auto !important;
+    display: block !important;
+    align-self: center !important;
+  }
+
+  /* Animaciones Orbitales Móvil */
+  @keyframes orbit { from { transform: rotate(0deg) translateX(105px) rotate(0deg); } to { transform: rotate(360deg) translateX(105px) rotate(-360deg); } }
+  @keyframes orbit2 { from { transform: rotate(0deg) translateX(120px) rotate(0deg); } to { transform: rotate(360deg) translateX(120px) rotate(-360deg); } }
+  @keyframes orbit3 { from { transform: rotate(0deg) translateX(105px) rotate(0deg); } to { transform: rotate(360deg) translateX(105px) rotate(-360deg); } }
+}
+
+/* Recuperación estilos terminal */
+.nav-term-btn {
+  padding: .4rem 1rem; border-radius: 999px; background: rgba(255,60,172,.1);
+  border: 1px solid rgba(255,60,172,.3); color: #ff3cac;
+  font-family: 'JetBrains Mono', monospace; font-size: .72rem; cursor: none;
+  letter-spacing: .06em; transition: all .2s;
+}
+.hero-term-link { 
+  background: transparent; border: none; cursor: none; padding: 0; 
+  font-family: 'JetBrains Mono', monospace; font-size: .7rem; color: #333; 
+  letter-spacing: .1em; 
+}
+.hero-term-link span { color: #ff3cac; }
+
+/* --- Arreglo definitivo para Móvil (Solo pega esto una vez) --- */
+@media (max-width: 768px) {
+  /* 1. Asegurar espacio en los bordes para toda la sección */
+  .section-container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  /* 2. El formulario debe ocupar todo el espacio disponible dentro del contenedor */
+  #contact form {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin: 0 auto !important;
+  }
+
+  /* 3. Asegurar que los campos del formulario respeten los bordes */
+  #contact input, 
+  #contact textarea {
+    width: 100% !important;
+    box-sizing: border-box !important; /* Clave: hace que el padding no rompa el ancho */
+  }
+
+  /* 4. Centrar el botón sin pelear con el estilo inline */
+  #contact form button[type="submit"] {
+    align-self: center !important;
+    margin: 20px auto 0 auto !important;
+    display: block !important;
   }
 }
