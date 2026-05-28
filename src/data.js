@@ -18,15 +18,27 @@
 //  Si una tecnología NO está en Devicons (ej: "Scrum"),
 //  usa el campo "iconText" con 1-3 letras en vez de "icon".
 // ============================================================
-// 1. Esto escanea la carpeta assets y sus subcarpetas buscando cualquier archivo .png, .jpg o .jpeg
+// 1. Escaneamos la carpeta assets de forma masiva
 const imagenesContext = require.context('./assets', true, /\.(png|jpe?g|svg)$/);
 
 const images = {};
 imagenesContext.keys().forEach((item) => {
+  // Ejemplos de lo que viene en 'item': './joan.png' o './projects/AutoGest_Pro.png'
+  
+  // Guardamos la ruta procesada por Webpack (la que entiende internet)
+  const rutaProcesada = imagenesContext(item); 
+  
+  // Creamos accesos directos para evitar fallos de rutas relativas:
+  // Guardamos usando la ruta completa sin el punto inicial (ej: 'joan.png' o 'projects/AutoGest_Pro.png')
   const claveLimpia = item.replace('./', '');
-  images[claveLimpia] = imagenesContext(item);
+  images[claveLimpia] = rutaProcesada;
+  
+  // Guardamos TAMBIÉN usando solo el nombre final del archivo como comodín de respaldo (ej: 'joan.png' o 'AutoGest_Pro.png')
+  const nombreArchivo = item.split('/').pop();
+  images[nombreArchivo] = rutaProcesada;
 });
 
+// Puedes verificar de forma local qué guardó escribiendo un console.log(images); si quieres.
 
 
 export const ME = {
@@ -39,7 +51,7 @@ export const ME = {
   linkedin:   "linkedin.com/in/joarojas",
   github:     "joarojas",
   cv:         "/cv.pdf",
-  photo:      "/joan.png",
+  photo:      images['joan.png'],
   openToWork: true,
 
   bio: [
@@ -80,7 +92,7 @@ export const PROJECTS = [
     accent: "#ff3cac",
     demo:   "#",
     repo:   "https://github.com/joarojas/ecommerce",
-    image:  "/projects/AutoGest_Pro.png",
+    image:  images["/projects/AutoGest_Pro.png"],
   },
   {
     id:       2,
