@@ -96,7 +96,10 @@ export const PROJECTS = [
     icon:     "devicon-react-original colored",
     iconText: null,
     title:    "AutoFix Pro",
-    desc:     "Programa de gestión para talleres mecánicos, con citas, clientes, facturación y gestión de reparaciones.",
+    desc:{
+      es:"Programa de gestión para talleres mecánicos, con citas, clientes, facturación y gestión de reparaciones.",
+      en:"Management program for auto repair shops, with appointments, clients, invoicing and repair management."
+    },   
     tags: [
       { name: "React",   icon: "devicon-react-original colored", iconText: null },
       { name: "Bootstrap", icon: "devicon-bootstrap-plain colored",   iconText: null },
@@ -111,12 +114,15 @@ export const PROJECTS = [
     id:       2,
     icon:     "devicon-javascript-plain colored",
     iconText: null,
-    title:    "Weather Dashboard",
-    desc:     "App del tiempo con geolocalización, pronóstico de 7 días y visualizaciones animadas según el clima en tiempo real.",
+    title:    "Parking Dashboard",
+    desc:{
+      es:"Dashboard para la gestión de estacionamiento, con visualizaciones en tiempo real y control de acceso.",
+      en:"Dashboard for parking management, with real-time visualizations and access control."
+    },
     tags: [
       { name: "JavaScript", icon: "devicon-javascript-plain colored", iconText: null },
-      { name: "D3.js",      icon: "devicon-d3js-plain colored",       iconText: null },
-      { name: "API REST",   icon: null,                                iconText: "API" },
+      { name: "React",      icon: "devicon-react-plain colored",      iconText: null },
+      { name: "Bootstrap",   icon: "devicon-bootstrap-plain colored",                                iconText: "API" },
     ],
     accent: "#2de2e6",
     demo:   "#",
@@ -128,7 +134,10 @@ export const PROJECTS = [
     icon:     "devicon-python-plain colored",
     iconText: null,
     title:    "Clasificador ML",
-    desc:     "Modelo que predice deserción estudiantil con 87% de precisión, entrenado con scikit-learn y expuesto con Flask.",
+    desc:{
+      es:"Modelo que predice deserción estudiantil con 87% de precisión, entrenado con scikit-learn y expuesto con Flask.",
+      en:"Model that predicts student dropout with 87% accuracy, trained with scikit-learn and exposed with Flask."
+    },
     tags: [
       { name: "Python",       icon: "devicon-python-plain colored", iconText: null },
       { name: "scikit-learn", icon: null,                           iconText: "SKL" },
@@ -174,22 +183,23 @@ export const SKILLS = [
     cat:   "Frontend",
     color: "#ff3cac",
     items: [
-      { name: "React",      icon: "devicon-react-original colored",    iconText: null },
-      { name: "TypeScript", icon: "devicon-typescript-plain colored",  iconText: null },
-      { name: "CSS3",       icon: "devicon-css3-plain colored",        iconText: null },
       { name: "HTML5",      icon: "devicon-html5-plain colored",       iconText: null },
-      { name: "Tailwind",   icon: "devicon-tailwindcss-plain colored", iconText: null },
+      { name: "CSS3",       icon: "devicon-css3-plain colored",        iconText: null },
+      { name: "JavaScript", icon: "devicon-javascript-plain colored",  iconText: null },
+      { name: "React",      icon: "devicon-react-plain colored",    iconText: null },
+      { name: "Bootstrap",   icon: "devicon-bootstrap-plain colored",  iconText: "API" },
     ],
   },
   {
     cat:   "Backend",
     color: "#2de2e6",
     items: [
-      { name: "Node.js",  icon: "devicon-nodejs-plain colored",  iconText: null },
       { name: "Python",   icon: "devicon-python-plain colored",  iconText: null },
       { name: "Java",     icon: "devicon-java-plain colored",    iconText: null },
-      { name: "GraphQL",  icon: "devicon-graphql-plain colored", iconText: null },
-      { name: "Express",  icon: "devicon-express-original",      iconText: null },
+      { name: "C",  icon: "devicon-c-plain colored", iconText: null },
+      {name: "C++", icon: "devicon-cplusplus-plain colored", iconText: null },
+      {name: "C#", icon: "devicon-csharp-plain colored", iconText: null },
+      {name: "Rust", icon: "devicon-rust-plain colored", iconText: null },
     ],
   },
   {
@@ -198,8 +208,8 @@ export const SKILLS = [
     items: [
       { name: "MySQL",      icon: "devicon-mysql-plain colored",      iconText: null },
       { name: "PostgreSQL", icon: "devicon-postgresql-plain colored", iconText: null },
-      { name: "MongoDB",    icon: "devicon-mongodb-plain colored",    iconText: null },
       { name: "Firebase",   icon: "devicon-firebase-plain colored",   iconText: null },
+      {name: "Microsoft SQL Server", icon: "devicon-microsoftsqlserver-plain colored", iconText: null},
     ],
   },
   {
@@ -207,19 +217,8 @@ export const SKILLS = [
     color: "#a855f7",
     items: [
       { name: "Git",    icon: "devicon-git-plain colored",    iconText: null },
-      { name: "Docker", icon: "devicon-docker-plain colored", iconText: null },
       { name: "Linux",  icon: "devicon-linux-plain",          iconText: null },
       { name: "GitHub", icon: "devicon-github-original",      iconText: null },
-    ],
-  },
-  {
-    cat:   "IA / ML",
-    color: "#4ade80",
-    items: [
-      { name: "Python",     icon: "devicon-python-plain colored",        iconText: null },
-      { name: "TensorFlow", icon: "devicon-tensorflow-original colored", iconText: null },
-      { name: "pandas",     icon: "devicon-pandas-original colored",     iconText: null },
-      { name: "NumPy",      icon: "devicon-numpy-original colored",      iconText: null },
     ],
   },
   {
@@ -228,8 +227,9 @@ export const SKILLS = [
     items: [
       { name: "VS Code", icon: "devicon-vscode-plain colored",  iconText: null },
       { name: "Figma",   icon: "devicon-figma-plain colored",   iconText: null },
-      { name: "Postman", icon: "devicon-postman-plain colored", iconText: null },
-      { name: "Scrum",   icon: null,                            iconText: "SCR" },
+      { name: "JetBrains", icon: "devicon-jetbrains-plain colored", iconText: null },
+      { name: "Bash", icon: "devicon-bash-plain colored", iconText: null},
+      {name: "IntelliJ", icon: "devicon-intellij-plain colored", iconText: null},
     ],
   },
 ];
@@ -249,48 +249,51 @@ export const SKILLS = [
 // ============================================================
 export const EXPERIENCE = [
   {
-    date:  "2022 — Presente",
-    role:  "Ingeniería en Computación",
-    place: "[Tu Universidad] · Costa Rica 🇨🇷",
-    desc:  "Carrera centrada en algoritmos, estructuras de datos, sistemas operativos, redes y desarrollo de software.",
-    color: "#f6f740",
-    type:  "education",
-    icon:  "devicon-github-original",        // ícono por defecto
-    logo:  null,                             // safeImg(experienceImages, './mi-uni.png')
+    // Mantenemos tus configuraciones visuales intactas
+    icon: "fab fa-github", 
+    color: "#e2d266",
+    
+    // Convertimos los textos en objetos bilingües
+    date: {
+      es: "2022 – Presente",
+      en: "2022 – Present"
+    },
+    title: {
+      es: "INGENIERÍA EN COMPUTACIÓN",
+      en: "COMPUTER ENGINEERING"
+    },
+    subtitle: {
+      es: "Tecnológico de Costa Rica · Costa Rica 🇨🇷",
+      en: "Costa Rica Institute of Technology · Costa Rica 🇨🇷"
+    },
+    desc: {
+      es: "Carrera centrada en desarrollo de software, algoritmos, estructuras de datos, redes y sistemas operativos. Participación activa en proyectos académicos y grupos de estudio.",
+      en: "Degree focused on software development, algorithms, data structures, networking, and operating systems. Active participation in academic projects and study groups."
+    }
   },
   {
-    date:  "Ene–May 2024",
-    role:  "Pasante Desarrollador Web",
-    place: "[Empresa] · [Ciudad]",
-    desc:  "Desarrollé features con React, colaboré con el equipo backend y participé en code reviews semanales.",
-    color: "#2de2e6",
-    type:  "work",
-    icon:  "devicon-react-original colored",
-    logo:  null,                             // safeImg(experienceImages, './empresa.png')
-  },
-  {
-    date:  "2023",
-    role:  "Certificación: [Nombre]",
-    place: "Coursera / Udemy",
-    desc:  "Completé formación avanzada en [tecnología], aplicada directamente a proyectos reales.",
-    color: "#ff3cac",
-    type:  "certification",
-    icon:  "devicon-python-plain colored",
-    logo:  null,                             // safeImg(certImages, './mi-certificado.png')
-  },
-
-  // ─── AGREGA EXPERIENCIA AQUÍ ───
-  // {
-  //   date:  "Jun–Ago 2025",
-  //   role:  "Desarrollador Freelance",
-  //   place: "Cliente independiente",
-  //   desc:  "Desarrollé una app web para gestión de inventario.",
-  //   color: "#a855f7",
-  //   type:  "work",
-  //   icon:  "devicon-nodejs-plain colored",
-  //   logo:  safeImg(experienceImages, './cliente.png'),
-  // },
+    icon: "fab fa-react",
+    color: "#00f3ff",
+    date: {
+      es: "Ene-May 2024",
+      en: "Jan-May 2024"
+    },
+    title: {
+      es: "PASANTE DESARROLLADOR WEB",
+      en: "WEB DEVELOPER INTERN"
+    },
+    subtitle: {
+      es: "[Empresa] · [Ciudad]",
+      en: "[Company] · [City]"
+    },
+    desc: {
+      es: "Desarrollé features con React, colaboré con el equipo backend y participé en code reviews semanales.",
+      en: "Developed features using React, collaborated with the backend team, and participated in weekly code reviews."
+    }
+  }
+  // Puedes seguir agregando el resto de tus certificaciones o puestos con esta misma estructura...
 ];
+
 
 // ============================================================
 //  CERTIFICADOS (sección opcional)
@@ -300,14 +303,14 @@ export const EXPERIENCE = [
 //  src/assets/certificates/
 // ============================================================
 export const CERTIFICATES = [
-  // {
-  //   title:    "React - The Complete Guide",
-  //   issuer:   "Udemy",
-  //   date:     "2023",
-  //   url:      "https://udemy.com/certificate/...",
-  //   image:    safeImg(certImages, './react-cert.png'),
-  //   color:    "#61dafb",
-  // },
+   {
+     title:    "React - The Complete Guide",
+     issuer:   "Udemy",
+     date:     "2023",
+     url:      "https://udemy.com/certificate/...",
+     image:    safeImg(certImages, './react-cert.png'),
+     color:    "#61dafb",
+   },
 ];
 
 // ============================================================
