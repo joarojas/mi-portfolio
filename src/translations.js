@@ -67,7 +67,47 @@ export const TRANSLATIONS = {
       cleared: 'Terminal limpiada. Escribe "help" para continuar.',
       placeholder: "escribe un comando...",
     },
+    terminal: {
+      invalid: "Comando no reconocido. Escribe 'help' para ver la lista.",
+      help: {
+        title: "Comandos disponibles:",
+        about: "Sobre Joan",
+        skills: "Stack tecnológico",
+        projects: "Proyectos",
+        contact: "Información de contacto",
+        github: "Abre perfil de GitHub",
+        cv: "Descarga el CV",
+        clear: "Limpia la terminal",
+        secret: "???"
+      },
+      about: {
+        name: "Joan Francisco Rojas Varela",
+        career: "Estudiante de Ingeniería en Computación ",
+        status: "Costa Rica 🇨🇷  |  Open to work ",
+        phrase: "Apasionado por el código limpio, el espacio y los retos imposibles."
+      },
+      skills: {
+        title: "Stack tecnológico:"
+      },
+      projects: {
+        title: "Proyectos destacados:"
+      },
+      contact: {
+        title: "Contacto:"
+      },
+      actions: {
+        github: "Abriendo github.com/joan_rojas... ", // Puedes actualizar aquí con tu usuario real
+        cv: "Descarga iniciada... "
+      },
+      secret: {
+        title: "🔒 ACCESO CLASIFICADO CONCEDIDO",
+        line1: "Si llegaste hasta aquí, ya demostraste curiosidad.",
+        line2: "Eso es exactamente lo que busco en un equipo.",
+        action: "→  Escríbeme: tu-correo@email.com"
+      }
+    }
   },
+
 
   en: {
     nav: {
@@ -136,6 +176,45 @@ export const TRANSLATIONS = {
       cleared: 'Terminal cleared. Type "help" to continue.',
       placeholder: "type a command...",
     },
+    terminal: {
+      invalid: "Command not recognized. Type 'help' to see the list.",
+        help: {
+          title: "Available commands:",
+          about: "About Joan",
+          skills: "Tech stack",
+          projects: "Projects",
+          contact: "Contact info",
+          github: "Open GitHub profile",
+          cv: "Download CV",
+          clear: "Clear terminal",
+          secret: "???"
+        },
+        about: {
+          name: "Joan Francisco Rojas Varela",
+          career: "Computer Engineering Student",
+          status: "Costa Rica 🇨🇷  |  Open to work",
+          phrase: "Passionate about clean code, space, and impossible challenges."
+        },
+        skills: {
+          title: "Tech Stack:"
+        },
+        projects: {
+          title: "Featured Projects:"
+        },
+        contact: {
+          title: "Contact:"
+        },
+        actions: {
+          github: "Opening github.com/joan_rojas... ",
+          cv: "Download started... "
+        },
+        secret: {
+          title: " CLASSIFIED ACCESS GRANTED",
+          line1: "If you made it this far, you've demonstrated curiosity.",
+          line2: "That is exactly what I'm looking for in a team.",
+          action: "→  Drop me a line: tu-correo@email.com"
+        }
+    }
   },
 };
 

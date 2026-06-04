@@ -17,12 +17,10 @@
 //  └── certificates/  → diplomas y certificaciones
 //
 //  ¿CÓMO AGREGAR UNA IMAGEN?
-//  1. Ponla en la carpeta correcta (ej: src/assets/projects/mi-app.png)
+//  1. Poner en la carpeta correcta (ej: src/assets/projects/mi-app.png)
 //  2. Úsala con el contexto de esa carpeta (ej: projectImages('./mi-app.png'))
 //  ¡Sin imports manuales, sin límite de imágenes!
-// ============================================================
 
-// — Contexto para cada módulo —
 const heroImages        = require.context('./assets/hero',         false, /\.(png|jpe?g|svg|webp)$/);
 const projectImages     = require.context('./assets/projects',     false, /\.(png|jpe?g|svg|webp)$/);
 const experienceImages  = require.context('./assets/experience',   false, /\.(png|jpe?g|svg|webp)$/);
@@ -318,58 +316,57 @@ export const CERTIFICATES = [
 //  Edita las respuestas de cada comando aquí.
 // ============================================================
 export const TERMINAL_COMMANDS = {
-  help: () => [
-    { t: "cmd",  v: "Comandos disponibles:" },
-    { t: "info", v: "  about    → Sobre Joan" },
-    { t: "info", v: "  skills   → Stack tecnológico" },
-    { t: "info", v: "  projects → Proyectos" },
-    { t: "info", v: "  contact  → Información de contacto" },
-    { t: "info", v: "  github   → Abre perfil de GitHub" },
-    { t: "info", v: "  cv       → Descarga el CV" },
-    { t: "info", v: "  clear    → Limpia la terminal" },
-    { t: "info", v: "  secret   → ???" },
+  help: (t) => [
+    { t: "cmd",  v: t.terminal.help.title },
+    { t: "info", v: `  about    → ${t.terminal.help.about}` },
+    { t: "info", v: `  skills   → ${t.terminal.help.skills}` },
+    { t: "info", v: `  projects → ${t.terminal.help.projects}` },
+    { t: "info", v: `  contact  → ${t.terminal.help.contact}` },
+    { t: "info", v: `  github   → ${t.terminal.help.github}` },
+    { t: "info", v: `  cv       → ${t.terminal.help.cv}` },
+    { t: "info", v: `  clear    → ${t.terminal.help.clear}` },
+    { t: "info", v: `  secret   → ${t.terminal.help.secret}` },
   ],
-  about: () => [
-    { t: "accent", v: "Joan Francisco Rojas Varela" },
-    { t: "info",   v: "Estudiante de Ingeniería en Computación " },
-    { t: "info",   v: "Costa Rica 🇨🇷  |  Open to work " },
-    { t: "muted",  v: "Apasionado por el código limpio, el espacio y los retos imposibles." },
+  about: (t) => [
+    { t: "accent", v: t.terminal.about.name },
+    { t: "info",   v: t.terminal.about.career },
+    { t: "info",   v: t.terminal.about.status },
+    { t: "muted",  v: t.terminal.about.phrase },
   ],
-  skills: () => [
-    { t: "cmd",  v: "Stack tecnológico:" },
-    { t: "info", v: "  Frontend → React, TypeScript, CSS3, HTML5, Tailwind" },
-    { t: "info", v: "  Backend  → Node.js, Python, Java, GraphQL" },
-    { t: "info", v: "  Datos    → MySQL, PostgreSQL, MongoDB, Firebase" },
-    { t: "info", v: "  DevOps   → Git, Docker, Linux, GitHub" },
-    { t: "info", v: "  IA/ML    → TensorFlow, pandas, NumPy" },
+  skills: (t) => [
+    { t: "cmd",  v: t.terminal.skills.title },
+    { t: "info", v: "  Frontend → React, Bootstrap, Tailwind CSS, HTML5, JavaScript" },
+    { t: "info", v: "  Backend  → Node.js, SQL Server" },
+    { t: "info", v: "  Lógica   → C, Rust, Prolog" },
+    { t: "info", v: "  Tools    → Git, Supabase, Docker, FL Studio" },
   ],
-  projects: () => [
-    { t: "cmd",    v: "Proyectos destacados:" },
-    { t: "accent", v: "  [01] AutoFix Pro" },
-    { t: "muted",  v: "       React · Node.js · MongoDB · Stripe" },
-    { t: "accent", v: "  [02] Weather Dashboard" },
-    { t: "muted",  v: "       JavaScript · D3.js · OpenWeather API" },
-    { t: "accent", v: "  [03] Clasificador ML" },
-    { t: "muted",  v: "       Python · scikit-learn · Flask" },
+  projects: (t) => [
+    { t: "cmd",    v: t.terminal.projects.title },
+    { t: "accent", v: "  [01] AutoFix Taller Pro" },
+    { t: "muted",  v: "       React · Bootstrap · Supabase · GitHub Actions" },
+    { t: "accent", v: "  [02] Tank Game DFS" },
+    { t: "muted",  v: "       Prolog · IA Heurísticas · Heuristic Graphs" },
+    { t: "accent", v: "  [03] Portfolio Terminal UI" },
+    { t: "muted",  v: "       React · CSS Customs · i18n Localization" },
   ],
-  contact: () => [
-    { t: "cmd",  v: "Contacto:" },
-    { t: "info", v: "  Email    → joan@email.com" },
-    { t: "info", v: "  LinkedIn → linkedin.com/in/joarojas" },
-    { t: "info", v: "  GitHub   → github.com/joarojas" },
+  contact: (t) => [
+    { t: "cmd",  v: t.terminal.contact.title },
+    { t: "info", v: "  Email    → tu-correo@email.com" },
+    { t: "info", v: "  LinkedIn → linkedin.com/in/tu-perfil" },
+    { t: "info", v: "  GitHub   → github.com/tu-usuario" },
   ],
-  github: () => {
-    window.open("https://github.com/joarojas", "_blank");
-    return [{ t: "accent", v: "Abriendo github.com/joarojas... " }];
+  github: (t) => {
+    window.open("https://github.com/tu-usuario", "_blank");
+    return [{ t: "accent", v: t.terminal.actions.github }];
   },
-  cv: () => {
+  cv: (t) => {
     window.open("/cv.pdf", "_blank");
-    return [{ t: "accent", v: "Descargando CV... " }];
+    return [{ t: "accent", v: t.terminal.actions.cv }];
   },
-  secret: () => [
-    { t: "accent", v: " ACCESO CLASIFICADO CONCEDIDO" },
-    { t: "info",   v: "Si llegaste hasta aquí, ya demostraste curiosidad." },
-    { t: "info",   v: "Eso es exactamente lo que busco en un equipo." },
-    { t: "accent", v: "→  Escríbeme: joan@email.com" },
+  secret: (t) => [
+    { t: "accent", v: t.terminal.secret.title },
+    { t: "info",   v: t.terminal.secret.line1 },
+    { t: "info",   v: t.terminal.secret.line2 },
+    { t: "accent", v: t.terminal.secret.action },
   ],
 };
