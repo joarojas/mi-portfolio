@@ -27,7 +27,7 @@ export const ME = {
   role:      "Estudiante de Ingeniería en Computación",
   location:  "Costa Rica 🇨🇷",
   email:     "jofarova214@gmail.com",
-  linkedin:  "linkedin.com/in/joan-francisco-rojas-varela",
+  linkedin:  "https://linkedin.com/in/joan-francisco-rojas-varela",
   github:    "joarojas",
   cv:        "/cv.pdf",
   photo:     safeImg(heroImages, './joan.png'),
