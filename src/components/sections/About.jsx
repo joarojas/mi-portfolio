@@ -1,22 +1,26 @@
 // ============================================================
 //  components/sections/About.jsx
 // ============================================================
-import { ME } from "../../data";
-import { Reveal } from "../ui/Reveal";
-import { GitHubStats } from "../widgets/GitHubStats";
+import { ME }            from "../../data";
+import { Reveal }        from "../ui/Reveal";
+import { SectionLabel }  from "../ui/SectionLabel";
+import { SectionTitle }  from "../ui/SectionTitle";
+import { GitHubStats }   from "../widgets/GitHubStats";
 
 const STAT_COLORS = ["#ff3cac", "#2de2e6", "#f6f740", "#4ade80"];
 
-export function About({ t, sLabel, sH2 }) {
+export function About({ t }) {
   return (
-    <section id="about" style={{ background: "#07070c", borderTop: "1px solid rgba(255,255,255,.03)" }}>
+    <section id="about" style={{ background:"#07070c", borderTop:"1px solid rgba(255,255,255,.03)" }}>
       <div className="section-container">
-        <Reveal>{sLabel(1, t.about.label)}</Reveal>
+        <Reveal><SectionLabel n={1} text={t.about.label} /></Reveal>
         <div className="about-grid">
 
           {/* Texto */}
           <div>
-            <Reveal>{sH2(t.about.title1, [t.about.title2, "#2de2e6"])}</Reveal>
+            <Reveal>
+              <SectionTitle line1={t.about.title1} line2={t.about.title2} accentColor="#2de2e6" />
+            </Reveal>
             <Reveal delay={80}>
               <p style={{ color:"#555", lineHeight:1.85, marginBottom:"1.2rem", fontWeight:300, fontSize:"1rem" }}>{t.about.p1}</p>
             </Reveal>

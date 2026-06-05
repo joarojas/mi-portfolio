@@ -1,4 +1,16 @@
+// ============================================================
+//  translations.js — Textos del portfolio en ES y EN
+//
+//  IMPORTANTE: cada clave debe aparecer UNA SOLA VEZ por idioma.
+//  Si una clave se repite, JavaScript usa solo la última — la
+//  primera se pierde silenciosamente.
+// ============================================================
+
 export const TRANSLATIONS = {
+
+  // ══════════════════════════════
+  //  ESPAÑOL
+  // ══════════════════════════════
   es: {
     nav: {
       inicio: "Inicio", sobre: "Sobre mí", skills: "Skills",
@@ -25,14 +37,10 @@ export const TRANSLATIONS = {
     },
     skills: {
       label: "Stack tecnológico", title1: "Herramientas", title2: "de mi arsenal.",
-      // Traducciones de categorías
       cats: {
-        "Frontend":        "Frontend",
-        "Backend":         "Backend",
-        "Bases de datos":  "Bases de datos",
-        "DevOps":          "DevOps",
-        "Herramientas":    "Herramientas",
-        "IA / ML":         "IA / ML",
+        "Frontend": "Frontend", "Backend": "Backend",
+        "Bases de datos": "Bases de datos", "DevOps": "DevOps",
+        "Herramientas": "Herramientas", "IA / ML": "IA / ML",
       },
     },
     projects: {
@@ -45,8 +53,7 @@ export const TRANSLATIONS = {
     },
     certificates: {
       label: "Certificaciones", title1: "Lo que he", title2: "aprendido.",
-      verify: "Ver certificado →",
-      empty: "Próximamente...",
+      verify: "Ver certificado →", empty: "Próximamente...",
     },
     contact: {
       label: "Contacto", title: "¿Hablamos?",
@@ -61,54 +68,42 @@ export const TRANSLATIONS = {
     footer: { made: "Hecho con corazón desde" },
     terminal: {
       welcome: "Bienvenido al sistema JOAN.DEV v1.0.0",
-      hint: 'Escribe "help" para ver los comandos disponibles.',
+      hint: "Escribe \"help\" para ver los comandos disponibles.",
       prompt: "guest@joan.dev:~$",
-      notFound: 'Comando no encontrado: "%s". Escribe "help".',
-      cleared: 'Terminal limpiada. Escribe "help" para continuar.',
+      notFound: "Comando no encontrado: \"%s\". Escribe \"help\".",
+      cleared: "Terminal limpiada. Escribe \"help\" para continuar.",
       placeholder: "escribe un comando...",
-    },
-    terminal: {
-      invalid: "Comando no reconocido. Escribe 'help' para ver la lista.",
       help: {
-        title: "Comandos disponibles:",
-        about: "Sobre Joan",
-        skills: "Stack tecnológico",
-        projects: "Proyectos",
-        contact: "Información de contacto",
-        github: "Abre perfil de GitHub",
-        cv: "Descarga el CV",
-        clear: "Limpia la terminal",
-        secret: "???"
+        title: "Comandos disponibles:", about: "Sobre Joan",
+        skills: "Stack tecnológico", projects: "Proyectos",
+        contact: "Información de contacto", github: "Abre perfil de GitHub",
+        cv: "Descarga el CV", clear: "Limpia la terminal", secret: "???",
       },
       about: {
         name: "Joan Francisco Rojas Varela",
-        career: "Estudiante de Ingeniería en Computación ",
-        status: "Costa Rica 🇨🇷  |  Open to work ",
-        phrase: "Apasionado por el código limpio, el espacio y los retos imposibles."
+        career: "Estudiante de Ingeniería en Computación 🎓",
+        status: "Costa Rica 🇨🇷  |  Open to work ✅",
+        phrase: "Apasionado por el código limpio, el espacio y los retos imposibles.",
       },
-      skills: {
-        title: "Stack tecnológico:"
-      },
-      projects: {
-        title: "Proyectos destacados:"
-      },
-      contact: {
-        title: "Contacto:"
-      },
+      skills: { title: "Stack tecnológico:" },
+      projects: { title: "Proyectos destacados:" },
+      contact: { title: "Contacto:" },
       actions: {
-        github: "Abriendo github.com/joan_rojas... ", // Puedes actualizar aquí con tu usuario real
-        cv: "Descarga iniciada... "
+        github: "Abriendo github.com/joarojas... 🚀",
+        cv: "Descargando CV... 📄",
       },
       secret: {
-        title: "🔒 ACCESO CLASIFICADO CONCEDIDO",
+        title: "🛸 ACCESO CLASIFICADO CONCEDIDO",
         line1: "Si llegaste hasta aquí, ya demostraste curiosidad.",
         line2: "Eso es exactamente lo que busco en un equipo.",
-        action: "→  Escríbeme: tu-correo@email.com"
-      }
-    }
+        action: "→  Escríbeme: jofarova214@gmail.com",
+      },
+    },
   },
 
-
+  // ══════════════════════════════
+  //  ENGLISH
+  // ══════════════════════════════
   en: {
     nav: {
       inicio: "Home", sobre: "About", skills: "Skills",
@@ -136,12 +131,9 @@ export const TRANSLATIONS = {
     skills: {
       label: "Tech stack", title1: "Tools of", title2: "my arsenal.",
       cats: {
-        "Frontend":        "Frontend",
-        "Backend":         "Backend",
-        "Bases de datos":  "Databases",
-        "DevOps":          "DevOps",
-        "Herramientas":    "Tools",
-        "IA / ML":         "AI / ML",
+        "Frontend": "Frontend", "Backend": "Backend",
+        "Bases de datos": "Databases", "DevOps": "DevOps",
+        "Herramientas": "Tools", "IA / ML": "AI / ML",
       },
     },
     projects: {
@@ -154,8 +146,7 @@ export const TRANSLATIONS = {
     },
     certificates: {
       label: "Certifications", title1: "What I've", title2: "learned.",
-      verify: "View certificate →",
-      empty: "Coming soon...",
+      verify: "View certificate →", empty: "Coming soon...",
     },
     contact: {
       label: "Contact", title: "Let's talk?",
@@ -170,51 +161,37 @@ export const TRANSLATIONS = {
     footer: { made: "Made with love from" },
     terminal: {
       welcome: "Welcome to the JOAN.DEV system v1.0.0",
-      hint: 'Type "help" to see available commands.',
+      hint: "Type \"help\" to see available commands.",
       prompt: "guest@joan.dev:~$",
-      notFound: 'Command not found: "%s". Type "help".',
-      cleared: 'Terminal cleared. Type "help" to continue.',
+      notFound: "Command not found: \"%s\". Type \"help\".",
+      cleared: "Terminal cleared. Type \"help\" to continue.",
       placeholder: "type a command...",
+      help: {
+        title: "Available commands:", about: "About Joan",
+        skills: "Tech stack", projects: "Projects",
+        contact: "Contact info", github: "Open GitHub profile",
+        cv: "Download CV", clear: "Clear terminal", secret: "???",
+      },
+      about: {
+        name: "Joan Francisco Rojas Varela",
+        career: "Computer Engineering Student ",
+        status: "Costa Rica 🇨🇷  |  Open to work ",
+        phrase: "Passionate about clean code, space, and impossible challenges.",
+      },
+      skills: { title: "Tech Stack:" },
+      projects: { title: "Featured Projects:" },
+      contact: { title: "Contact:" },
+      actions: {
+        github: "Opening github.com/joarojas... ",
+        cv: "Downloading CV... ",
+      },
+      secret: {
+        title: "CLASSIFIED ACCESS GRANTED",
+        line1: "If you made it this far, you've demonstrated curiosity.",
+        line2: "That is exactly what I'm looking for in a team.",
+        action: "→  Drop me a line: jofarova214@gmail.com",
+      },
     },
-    terminal: {
-      invalid: "Command not recognized. Type 'help' to see the list.",
-        help: {
-          title: "Available commands:",
-          about: "About Joan",
-          skills: "Tech stack",
-          projects: "Projects",
-          contact: "Contact info",
-          github: "Open GitHub profile",
-          cv: "Download CV",
-          clear: "Clear terminal",
-          secret: "???"
-        },
-        about: {
-          name: "Joan Francisco Rojas Varela",
-          career: "Computer Engineering Student",
-          status: "Costa Rica 🇨🇷  |  Open to work",
-          phrase: "Passionate about clean code, space, and impossible challenges."
-        },
-        skills: {
-          title: "Tech Stack:"
-        },
-        projects: {
-          title: "Featured Projects:"
-        },
-        contact: {
-          title: "Contact:"
-        },
-        actions: {
-          github: "Opening github.com/joan_rojas... ",
-          cv: "Download started... "
-        },
-        secret: {
-          title: " CLASSIFIED ACCESS GRANTED",
-          line1: "If you made it this far, you've demonstrated curiosity.",
-          line2: "That is exactly what I'm looking for in a team.",
-          action: "→  Drop me a line: tu-correo@email.com"
-        }
-    }
   },
 };
 

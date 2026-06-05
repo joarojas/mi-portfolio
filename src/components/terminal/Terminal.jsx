@@ -1,8 +1,9 @@
 // ============================================================
 //  components/terminal/Terminal.jsx
+//  Pasa t a cada comando para que los textos sean bilingües.
 // ============================================================
 import { useState, useRef, useEffect } from "react";
-import { TERMINAL_COMMANDS } from "../../data";
+import { TERMINAL_COMMANDS }           from "../../data";
 
 export function Terminal({ onClose, t }) {
   const [lines, setLines] = useState([
@@ -13,32 +14,42 @@ export function Terminal({ onClose, t }) {
   const bottomRef = useRef(null);
   const inputRef  = useRef(null);
 
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [lines]);
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior:"smooth" }); }, [lines]);
   useEffect(() => { inputRef.current?.focus(); }, []);
 
   const run = cmd => {
     const c = cmd.trim().toLowerCase();
-    const newLines = [{ t: "prompt", v: `${t.terminal.prompt} ${cmd}` }];
+    const newLines = [{ t:"prompt", v:`${t.terminal.prompt} ${cmd}` }];
 
     if (c === "clear") {
-      setLines([{ t: "muted", v: t.terminal.cleared }]);
+      setLines([{ t:"muted", v:t.terminal.cleared }]);
       setInput("");
       return;
     }
-    if (!c) { setLines(p => [...p, ...newLines]); setInput(""); return; }
+    if (!c) {
+      setLines(p => [...p, ...newLines]);
+      setInput("");
+      return;
+    }
 
-    const fn = TERMINAL_COMMANDS[c];
+    const fn     = TERMINAL_COMMANDS[c];
+    // Cada comando recibe t para que sus respuestas sean bilingües
     const result = fn
-      ? fn()
-      : [{ t: "error", v: t.terminal.notFound.replace("%s", c) }];
+      ? fn(t)
+      : [{ t:"error", v: t.terminal.notFound.replace("%s", c) }];
 
     setLines(p => [...p, ...newLines, ...result]);
     setInput("");
   };
 
-  const colMap = {
-    cmd: "#f6f740", info: "#a8a8b3", accent: "#ff3cac",
-    muted: "#555",  prompt: "#2de2e6", error: "#ff6b6b",
+  const COLOR_MAP = {
+    cmd:    "#f6f740",
+    info:   "#a8a8b3",
+    accent: "#ff3cac",
+    muted:  "#555",
+    prompt: "#2de2e6",
+    error:  "#ff6b6b",
+     link:   "#2de2e6",
   };
 
   return (
@@ -53,23 +64,48 @@ export function Terminal({ onClose, t }) {
           <div onClick={onClose} style={{ width:12, height:12, borderRadius:"50%", background:"#ff5f57", cursor:"none" }} />
           <div style={{ width:12, height:12, borderRadius:"50%", background:"#febc2e" }} />
           <div style={{ width:12, height:12, borderRadius:"50%", background:"#28c840" }} />
-          <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:".72rem", color:"#555", marginLeft:12, letterSpacing:".08em" }}>joan@joan.dev — terminal</span>
+          <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:".72rem", color:"#555", marginLeft:12, letterSpacing:".08em" }}>
+            joan@joan.dev — terminal
+          </span>
         </div>
 
         {/* Output */}
-        <div style={{ flex:1, overflowY:"auto", padding:"1.25rem 1.5rem", display:"flex", flexDirection:"column", gap:3 }}
-          onClick={() => inputRef.current?.focus()}>
+        <div
+          style={{ flex:1, overflowY:"auto", padding:"1.25rem 1.5rem", display:"flex", flexDirection:"column", gap:3 }}
+          onClick={() => inputRef.current?.focus()}
+        >
           {lines.map((l, i) => (
-            <div key={i} className="term-line" style={{ fontFamily:"'JetBrains Mono',monospace", color: colMap[l.t] || "#a8a8b3", whiteSpace:"pre-wrap" }}>
-              {l.v}
-            </div>
+            l.t === "link" ? (
+              <a key={i} href={l.href} target="_blank" rel="noreferrer"
+                className="term-line"
+                style={{
+                  color:          "#2de2e6",
+                  fontFamily:     "'JetBrains Mono',monospace",
+                  display:        "block",
+                  textDecoration: "none",
+                  cursor:         "pointer",
+                  transition:     "color .2s",
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = "#ff3cac"}
+                onMouseLeave={e => e.currentTarget.style.color = "#2de2e6"}
+              >
+                {l.v} ↗
+              </a>
+            ) : (
+              <div key={i} className="term-line"
+                style={{ fontFamily:"'JetBrains Mono',monospace", color: COLOR_MAP[l.t] ?? "#a8a8b3", whiteSpace:"pre-wrap" }}>
+                {l.v}
+              </div>
+            )
           ))}
           <div ref={bottomRef} />
         </div>
 
         {/* Input */}
         <div style={{ display:"flex", alignItems:"center", padding:".85rem 1.5rem", borderTop:"1px solid rgba(255,255,255,.05)", background:"#0d0d16", gap:8 }}>
-          <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:".88rem", color:"#2de2e6", flexShrink:0 }}>{t.terminal.prompt}</span>
+          <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:".88rem", color:"#2de2e6", flexShrink:0 }}>
+            {t.terminal.prompt}
+          </span>
           <input
             ref={inputRef}
             className="term-input"
