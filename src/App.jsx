@@ -84,7 +84,7 @@ export default function Portfolio() {
           <li><LangDropdown lang={lang} setLang={setLang} /></li>
           <li>
             <a 
-              href={`${import.meta.env.BASE_URL}cv.pdf`} 
+              href={process.env.PUBLIC_URL + '/cv.pdf'} 
               download="Joan_Rojas_CV.pdf" 
               className="nav-cv-btn"
             >
