@@ -83,8 +83,8 @@ export default function Portfolio() {
           </li>
           <li><LangDropdown lang={lang} setLang={setLang} /></li>
           <li>
-            <a href={ME.cv} download className="nav-cv-btn">
-              {t.nav.cv}
+            <a href={process.env.PUBLIC_URL + '/cv.pdf'} download="Joan_Rojas_CV.pdf" className="nav-cv-btn">
+                {t.nav.cv}
             </a>
           </li>
         </ul>
